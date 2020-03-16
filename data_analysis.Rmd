@@ -1,7 +1,7 @@
 ---
 title: "Student Ethogram - Data Analysis"
-output:
-  html_document: default
+author: "Marinara Marcato"
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -9,22 +9,321 @@ knitr::opts_chunk$set(echo = TRUE)
 library(DescTools)
 library(ggplot2)
 library(dplyr)
+library(plyr)
 ```
 
-## Importing Data
+## Introduction 
+This document shows the data analysis carried out to investigate 
+dog's behavioral data considering the ethograms filled out by students
+Hazel and Conghal.
 
+## Data Exploration
 
-```{r cars}
+### Columns: Variables
+The ethogram comprised of the following types and number of variables.
+
+```{r, echo = FALSE}
 setwd("E://Study//Ethogram")
 data <- read.csv('20-02-26_Ethogram.csv')
+
+# dataframe column names
+cols = colnames(data)
+
+# separate columns by data types
+ordinal = c(
+  'Familiarisation.Response..Oriented.to.Handler.',
+  'Familiarisation.Response..Exploration.',
+  'Familiarisation.Response..Waiting.',
+  'Call.Back.Response',
+  'Walking.Distractibility',
+  'Walking.Pull.on.leash',
+  'Walking.Pull.strength',
+  'Walking.Initiative',
+  'Sitting.Attempts',
+  'Sitting.Response',
+  'Lying.Attempts',
+  'Lying.Response',
+  'Lying.Settled',
+  'Body.check.Response',
+  'Distractions.First.Response..Object.',
+  'Distractions.First.Response..Human.',
+  'Distractions.First.Response..Car.',
+  'Distractions.First.Response..Food.',
+  'Distractions.Second.Response..Object.',
+  'Distractions.Second.Response..Human.',
+  'Distractions.Second.Response..Car.',
+  'Distractions.Second.Response..Food.',
+  'Distractions.Pull.on.leash',
+  'Distractions.Pull.strength',
+  'Kong.Concentration.Response',
+  'Kong.Retrieve.Response.to.stimulus',
+  'Kong.Retrieve.Response.to.assessor',
+  'Kong.Retrieve.Back',
+  'Dog.Response',
+  'Dog.Call.Back.Response',
+  'Crate.Entering',
+  'Crate.Behaviours..Relaxing.',
+  'Crate.Behaviours..Sniffing.Exploring..',
+  'Crate.Behaviours..Attention.Seeking.',
+  'Crate.Behaviours..Digging.',
+  'Crate.Behaviours..Licking.Mouthing.',
+  'Crate.Behaviours..Whining.',
+  'Crate.Behaviours..Barking.',
+  'Crate.Response')
+
+count = c(
+  'Short.Barks.Count',
+  'Continuous.Barks.Duration',
+  'Continuous.Barks.Count',
+  'Whines.Duration',
+  'Whines.Count',
+  'Shakes.Count',
+  'Jumps.Count')
+
+categorical = c(
+  'Body.check.General..Mouths.', 
+  'Body.check.General..Licks.',
+  'Tea.Towel.First.Response..Indifferent.', 
+  'Tea.Towel.First.Response..Turns.head.',
+  'Tea.Towel.First.Response..Attempts.to.Removes.towel.by.moving.',
+  'Tea.Towel.First.Response..Attempts.to.Removes.towel.with.mouth.',
+  'Tea.Towel.First.Response..Plays.',
+  'Tea.towel.Second.Response..Indifferent.',
+  'Tea.towel.Second.Response..Turns.head.',
+  'Tea.towel.Second.Response..Attempts.to.Removes.towel.by.moving.',
+  'Tea.towel.Second.Response..Attempts.to.Removes.towel.with.mouth.',
+  'Tea.towel.Second.Response..Plays.',
+  'Kong.Retrieve.Lateralisation'
+  # eliminate 'Crate.Urinating' because only has No
+)
+
+all = c(ordinal, count, categorical)
+
+cat("Ordinal:", length(ordinal))       # 39 variables
+cat("Count:", length(count))         # 7 variables
+cat("Categorical:", length(categorical))   # 13 variables
+cat("All:", length(all))           # 60 variables in total
 ```
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+### Rows: Dogs
+Total number of ethograms in the dataset:
+```{r data, echo = FALSE}
+# removing duplicates, 105 examples left
+data = data[!duplicated(data[,3:4]),]
+cat(length(data))
+dog_dc = aggregate(data$Data.Collection.Number, by = list(Category = data$Name), FUN = sum)
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Total number of ethograms for each Data Collection:
+```{r , echo = FALSE}
+# creating new dataframe dc1 containing data collection 1 
+dc1 <- data[data$Data.Collection.Number == 1, ]
+# removing litter with only one dog
+dc1 = dc1[!(dc1$Litter == 'L' | dc1$Litter == 'T' | dc1$Litter == 'Z'),]
+# resetting levels
+dc1$Name = factor(dc1$Name)
+dc1$Litter = factor(dc1$Litter)
+# printing out information
+cat("DC1:", length(dc1$Name), "\n", paste(sort(dc1$Name), collapse = ","))
+
+
+# creating new dataframe dc2 containing data collection 2 
+dc2 <- data[data$Data.Collection.Number == 2, ]
+# removing litter with only one dog
+dc2 = dc2[!(dc2$Litter == 'L' | dc2$Litter == 'T' | dc2$Litter == 'Z'),]
+# resetting levels
+dc2$Name = factor(dc2$Name)
+dc2$Litter = factor(dc2$Litter)
+# printing out information
+cat("DC2:", length(dc2$Name), "\n", paste(sort(dc2$Name), collapse = ","))
+
+# retrieving name of dogs with dc1 and dc2
+dog_dc = aggregate(data$Data.Collection.Number, by = list(Category = data$Name), FUN = sum)
+dogs_dcs = dog_dc[dog_dc$x ==3, 'Category']
+dcs = data %>% filter( Name %in% dogs_dcs)
+# removing litter with only one dog
+dcs_litter = subset(dcs,  !Litter %in%  c('L','M','T', 'Z'))
+dcs_litter$Litter = factor(dcs_litter$Litter)
+dcs_litter$Name = factor(dcs_litter$Name)
+
+cat("DCS:", length(levels(dcs$Name)), "\n", paste(sort(levels(dcs$Name)), collapse = ","))
+
+prop_sex = rbind(table(dc1$Sex),table(dc2$Sex),table(dcs$Sex)/2)
+barplot(prop_sex, beside = TRUE, space = c(0.1, 0.5), ylim = c(0,(1.2*max(prop_sex))), col = rainbow(nrow(prop_sex)), 
+main = " Number of Dogs per Gender considering Data Collections")
+
+legend("topright", legend = c("DC1", "DC2", "DC1&2"), col = rainbow(nrow(prop_sex)), pch = 16)
+
+prop_litter = rbind.fill(data.frame(rbind(table(dc1$Litter))),data.frame(rbind(table(dc2$Litter))),data.frame(rbind(table(dcs$Litter)/2)))
+barplot(as.matrix(prop_litter), beside = TRUE, space = c(0.1, 0.5), ylim = c(0,(1.2*max(prop_litter, na.rm = TRUE))), col = rainbow(nrow(prop_litter)), 
+main = "Number of Dogs per Litter considering Data Collections" )
+legend("topright", legend = c("DC1", "DC2", "DC1&2"), col = rainbow(nrow(prop_litter)), pch = 16)
+```
+
+
+
+
+## Data Analysis
+### Between Litters, Controlling for DC
+The difference in behaviours between different Litters will be investigated controlling for Data Collection.
+
+##### Ordinal Variables
+Kruskal-Wallis Test is used to test whether the difference between different litters is significant. 
+Dunn Test using bonferroni is used as a post-hoc to find out which groups differ. 
+
+
+```{r, echo = FALSE}
+# Kruskal-Wallis Test:
+# testing significant differences between multiple groups 
+ordinal_between_groups <- function(df){
+  result = c()
+  for (variable in ordinal){
+      r = kruskal.test(df[, variable], df$Litter)
+      result = rbind(result, c(variable, r[1], r[2], r[3]))
+  }
+  return (result)
+}
+
+# POST-HOC Test for Kruskal-Wallis Test: 
+#   pairwise comparison of groups which showed statistically significant difference
+posthoc_between_groups <- function(df, variables){
+  results = c()
+  for (variable in variables){
+    r = DunnTest(df[,variable], df$Litter, method = "bonferroni")
+    results = rbind(results, c(variable,  r))
+  }
+  return(results)
+}
+
+# saves results for ALL ORDINAL-scored behaviours between litters
+dc1_ordinal = ordinal_between_groups(dc1)
+dc2_ordinal = ordinal_between_groups(dc2)
+# saves results for SIGNIFICANTLY DIFFERENT ORDINAL-scored behaviours between litters 
+dc1_ordinal_sign = dc1_ordinal[dc1_ordinal[,4]<0.05, ]
+dc2_ordinal_sign = dc2_ordinal[dc2_ordinal[,4]<0.05, ]
+
+# performs posthoc on SIGNIFICANTLY DIFFERENT ORDINAL variables
+dc1_ordinal_ph = posthoc_between_groups(dc1, unlist(dc1_ordinal_sign[,1]))
+dc2_ordinal_ph = posthoc_between_groups(dc2, unlist(dc2_ordinal_sign[,1]))
+
+# saves outputs to file
+cat('DC 1 - Difference between litters')
+print(dc1_ordinal_sign)
+cat('DC 2 - Difference between litters')
+print(dc2_ordinal_sign)
+
+
+plot_ordinal <- function(df, var){
+  # returns bar plot of @var in df per 'Litter'
+  df = df %>% group_by(Litter) %>% summarise_at(var, funs(mean))
+  barplot(df[[var]], names.arg = df[['Litter']], ylab = 'Mean score', xlab= 'Litter', main = var)
+}
+
+
+for (var in unlist(dc1_ordinal_sign[,1])){
+  print (var)
+  plot_ordinal(dc2, var)   
+}
+```
+
+#### Count Variables
+
+No need to perform Post Hoc because none of the variables was significantly different 
+
+```{r, echo = TRUE}
+count_between_groups <- function(df){
+  result = c()
+  for (variable in count){
+    r = kruskal.test(df[, variable], df$Litter)
+    print(c(variable, r[3]))
+    result = rbind(result, c(variable, r[1], r[2], r[3]))
+  }
+  return (result)
+}
+dc1_count = count_between_groups(dc1)
+dc2_count = count_between_groups(dc2)
+dc1_count_sign = dc1_count[dc1_count[,4]<0.05, ]
+dc2_count_sign = dc2_count[dc2_count[,4]<0.05, ]
+```
+
+#### Categorical Variables
+
+Testing significance of all CATEGORICAL variables considering GROUPS
+```{r, echo = TRUE}
+categorical_between_groups <- function(df){
+  result = c()
+  for (variable in categorical){
+    if (length(unique(df[,variable]))>1){
+      r = chisq.test(df[, variable], df$Litter)
+      print(c(variable, r[3]))
+      result = rbind(result, c(variable, r[1], r[2], r[3]))
+    }
+  }
+  return (result)
+}
+
+dc1_categorical = categorical_between_groups(dc1)
+dc2_categorical = categorical_between_groups(dc2)
+dc1_categorical_sign = dc1_categorical[dc1_categorical[,4]<0.05, ]
+dc2_categorical_sign = dc2_categorical[dc2_categorical[,4]<0.05, ]
+```
+
+
+### Between Litters and within Data Collections
+using mixed design ANOVA (AOV) even though I know the data may not be appropriate... 
+
+aov_behaviour_time <- aov(behaviour ~ litter*DC + Error(dog/DC), data= your_dataset)
+
+```{r, include = TRUE}
+
+ordinal_within_groups <- function(df){
+  r_all = c()
+  r_sig = c()
+  for (variable in ordinal){
+    print(variable)
+    r = summary(aov(df[, variable] ~ Litter*Data.Collection.Number + Error(Name/Data.Collection.Number), data = df))
+    r_all = rbind(r_all, c(variable, r[[1]], r[[2]]))
+    pvalues = c(unlist(r[[1]])["Pr(>F)1"],unlist(r[[2]])["Pr(>F)1"], unlist(r[[2]])["Pr(>F)2"])
+    if (any(pvalues < 0.05)){
+      r_sig = rbind(r_sig, c(variable, r[[1]], r[[2]]))
+    }
+  }
+  return (r_sig)
+}
+ord_dcs_sig = ordinal_within_groups(dcs)
+```
+
+
+> UNDERSTAND THE OUTPUT:
+most of the variables result in a model with 1 factor
+while, some of them result in a model with 2 factors
+
+
+```{r, echo = TRUE}
+
+# barplot of behaviour per DC
+for (variable in ordinal){
+  par(mfrow = c(1, 3))
+  for(i in unique(dcs$Data.Collection.Number)) {
+    print (i)
+    barplot(table(dcs[dcs$Data.Collection.Number == i, variable]), space = 1,
+         xlab = "",
+         col = "gray50",
+         main = paste("DC", i, variable)) 
+  }
+  boxplot(dcs[dcs$Data.Collection.Number == 1,variable], dcs[dcs$Data.Collection.Number == 2,variable], names = unique(dcs$Data.Collection.Number))
+  #title(strwrap(descriptive, width=60), cex.main=1, font.main=1)
+}
+```
+
+## Within Subject Analysis
+
+
+>run wilcoxon for ordinal data
+```{r, include = TRUE}
+dcs$Data.Collection.Number
+groupby(dcs, Data.Collection.Number)
+```
+
+> run chi-squared for categorical data
+
