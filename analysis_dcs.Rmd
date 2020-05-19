@@ -1,0 +1,193 @@
+---
+title: "Student Ethogram - Data Analysis"
+author: "Marinara Marcato"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(DescTools)
+library(ggplot2)
+library(dplyr)
+library(plyr)
+```
+
+## Introduction 
+This document shows the data analysis carried out to investigate 
+dog's behavioral data considering the ethograms filled out by students
+Hazel and Conghal.
+
+
+## Data Exploration
+
+### Columns: Variables
+The ethogram comprised of the following types and number of variables.
+
+```{r, echo = FALSE}
+setwd("C://Users//marinara.marcato//Data//Ethogram//")
+vars <- read.csv('variables.csv')
+data <- read.csv('20-02-26_Ethogram.csv')
+
+# Adding a column to df vars for Test 
+vars %>% mutate(Test = case_when(
+        Type == "count" ~ "Wilcoxon",
+        Type == "ordinal" ~ "Wilcoxon", 
+        Type == "categorical" ~ "Chisq",
+        Type == "info" ~ "NA",
+        Type == "unused" ~ "NA"))
+
+# dataframe column names
+cols = colnames(data)
+
+print(vars[vars$Type == 'categorical',])
+# separate columns by data types
+ordinal = c(
+  'Familiarisation.Response..Oriented.to.Handler.',
+  'Familiarisation.Response..Exploration.',
+  'Familiarisation.Response..Waiting.',
+  'Call.Back.Response',
+  'Walking.Distractibility',
+  'Walking.Pull.on.leash',
+  'Walking.Pull.strength',
+  'Walking.Initiative',
+  'Sitting.Attempts',
+  'Sitting.Response',
+  'Lying.Attempts',
+  'Lying.Response',
+  'Lying.Settled',
+  'Body.check.Response',
+  'Distractions.First.Response..Object.',
+  'Distractions.First.Response..Human.',
+  'Distractions.First.Response..Car.',
+  'Distractions.First.Response..Food.',
+  'Distractions.Second.Response..Object.',
+  'Distractions.Second.Response..Human.',
+  'Distractions.Second.Response..Car.',
+  'Distractions.Second.Response..Food.',
+  'Distractions.Pull.on.leash',
+  'Distractions.Pull.strength',
+  'Kong.Concentration.Response',
+  'Kong.Retrieve.Response.to.stimulus',
+  'Kong.Retrieve.Response.to.assessor',
+  'Kong.Retrieve.Back',
+  'Dog.Response',
+  'Dog.Call.Back.Response',
+  'Crate.Entering',
+  'Crate.Behaviours..Relaxing.',
+  'Crate.Behaviours..Sniffing.Exploring..',
+  'Crate.Behaviours..Attention.Seeking.',
+  'Crate.Behaviours..Digging.',
+  'Crate.Behaviours..Licking.Mouthing.',
+  'Crate.Behaviours..Whining.',
+  'Crate.Behaviours..Barking.',
+  'Crate.Response')
+
+count = c(
+  'Short.Barks.Count',
+  'Continuous.Barks.Duration',
+  'Continuous.Barks.Count',
+  'Whines.Duration',
+  'Whines.Count',
+  'Shakes.Count',
+  'Jumps.Count')
+
+categorical = c(
+  'Body.check.General..Mouths.', 
+  'Body.check.General..Licks.',
+  'Tea.Towel.First.Response..Indifferent.', 
+  'Tea.Towel.First.Response..Turns.head.',
+  'Tea.Towel.First.Response..Attempts.to.Removes.towel.by.moving.',
+  'Tea.Towel.First.Response..Attempts.to.Removes.towel.with.mouth.',
+  'Tea.Towel.First.Response..Plays.',
+  'Tea.towel.Second.Response..Indifferent.',
+  'Tea.towel.Second.Response..Turns.head.',
+  'Tea.towel.Second.Response..Attempts.to.Removes.towel.by.moving.',
+  'Tea.towel.Second.Response..Attempts.to.Removes.towel.with.mouth.',
+  'Tea.towel.Second.Response..Plays.',
+  'Kong.Retrieve.Lateralisation'
+  # eliminate 'Crate.Urinating' because only has No
+)
+
+
+
+all = c(ordinal, count, categorical)
+
+cat("Ordinal:", length(ordinal))       # 39 variables
+cat("Count:", length(count))         # 7 variables
+cat("Categorical:", length(categorical))   # 13 variables
+cat("All:", length(all))           # 60 variables in total
+```
+
+### Rows: Dogs
+Total number of ethograms in the dataset, there is two per dog:
+```{r data, echo = FALSE}
+# removing duplicates, 105 examples left
+data = data[!duplicated(data[,3:4]),]
+# data collection number per dog
+dog_dc = aggregate(data$Data.Collection.Number, by = list(Category = data$Name), FUN = sum)
+# retrieving name of dogs with dc1 and dc2
+dogs_dcs = dog_dc[dog_dc$x ==3, 'Category']
+# selecting dogs with dc1 and dc2 only
+dcs = data %>% filter( Name %in% dogs_dcs)
+# ordering the df by Name and DC
+dcs = dcs[order(dcs$Name, dcs$Data.Collection.Number),]
+dcs$Name = factor(dcs$Name)
+cat(length(dcs))
+```
+
+
+## Within Subject Analysis
+
+### Ordinal data
+Running wilcoxon for ordinal data. 
+```{r, include = TRUE}
+# groups are the dcs
+ordinal_within_groups <- function(df){
+  result = c()
+  for (variable in ordinal){
+      r = wilcox.test(df[df$Data.Collection.Number == 1 , variable], df[df$Data.Collection.Number == 2, variable], paired = TRUE)
+      result = rbind(result, c(variable, r[1], r[2], r[3]))
+  }
+  return (result)
+}
+
+dcs_ordinal = ordinal_within_groups(dcs)
+ordinal_sign = dcs_ordinal[dcs_ordinal[,4]<0.05, ]
+print(ordinal_sign)
+```
+
+### Count data
+Running wilcoxon for count data. No signficant results found.
+```{r, include = TRUE}
+# groups are the dcs
+count_within_groups <- function(df){
+  result = c()
+  for (variable in count){
+      r = wilcox.test(df[df$Data.Collection.Number == 1 , variable], df[df$Data.Collection.Number == 2, variable], paired = TRUE)
+      result = rbind(result, c(variable, r[1], r[2], r[3]))
+  }
+  return (result)
+}
+dcs_count = count_within_groups(dcs)
+count_sign = dcs_count[dcs_count[,4]<0.05, ]
+```
+
+### Categorical data
+run chi-squared for categorical data
+```{r, include = TRUE}
+# groups are the dcs
+categorical_within_groups <- function(df){
+  result = c()
+  for (variable in categorical){
+    if (length(unique(df[df$Data.Collection.Number == 1 ,variable]))>1 & length(unique(df[df$Data.Collection.Number == 2 ,variable]))>1){
+      #`correct=FALSE` to turn off Yates’ continuity correction.? 
+      r = chisq.test(df[df$Data.Collection.Number == 1 , variable], df[df$Data.Collection.Number == 2, variable])
+      result = rbind(result, c(variable, r[1], r[2], r[3]))
+    }
+  }
+  return (result)
+}
+dcs_categorical = categorical_within_groups(dcs)
+categorical_sign = dcs_categorical[dcs_categorical[,4]<0.05, ]
+print(unlist(categorical_sign[,1]))
+```
