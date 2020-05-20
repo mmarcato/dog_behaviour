@@ -3,7 +3,7 @@ import re
 import datetime as dt
 import numpy as np
 
-my_dir = "E:\\Study"
+my_dir = "C:\\Users\\marinara.marcato\\Data"
 
 def import_ethogram(base_dir):
     df = pd.read_csv(("%s\\Ethogram\\20-02-17_Ethogram-Researchers-FormResponses.csv" % base_dir), parse_dates = ['Timestamp', 'Data Collection Date'])
@@ -15,6 +15,7 @@ def import_summary(base_dir):
         dfs.get(key).set_index([('Info','Name')], inplace = True, drop = False)
         dfs.get(key).loc[: , ('Info', 'Intake')].fillna(method = 'ffill', inplace = True)
         dfs.get(key).rename(columns = {'Data Collection 1' : 'DC1', 'Data Collection 2' : 'DC2' }, inplace = True)
+    
     
     # return Measurements 
     return pd.concat({'Info': dfs['Summary']['Info'],
