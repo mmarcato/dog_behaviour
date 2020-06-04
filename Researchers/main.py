@@ -3,10 +3,10 @@ import re
 import datetime as dt
 import numpy as np
 
-my_dir = "C:\\Users\\marinara.marcato\\Data"
+my_dir = "C:\\Users\\marinara.marcato\\Data\\Ethogram"
 
 def import_ethogram(base_dir):
-    df = pd.read_csv(("%s\\Ethogram\\20-02-17_Ethogram-Researchers-FormResponses.csv" % base_dir), parse_dates = ['Timestamp', 'Data Collection Date'])
+    df = pd.read_csv(("%s\\20-02-17_Ethogram-Researchers-FormResponses.csv" % base_dir), parse_dates = ['Timestamp', 'Data Collection Date'])
     return df
 
 def import_summary(base_dir):
@@ -129,23 +129,26 @@ for col in cols:
 for col in cols:
     print(df_ethogram[col].head(5))
 
-#need to number encode Crate-Response, Walking-Distractibility
+#need to number encode Crate-Response, Walking-Distractibility, Petting-Holding dog
 vars_crate = {'Relaxed/Indifferent':1,
  'Uneasy but cooperative':2,
  'Anxious':3 ,
  'Extremely Anxious': 4}
-vars_walk_dist = {'Hardly distracted':1,'Somewhat distracted':2,  'Mostly distracted':3}
+vars_walking = {'Hardly distracted':1,'Somewhat distracted':2,  'Mostly distracted':3}
+vars_petting = {'Never' :1, 'Sometimes':2, 'Always': 3}
 
 df_ethogram['Crate-Response'] = df_ethogram['Crate-Response'].map(vars_crate)
-df_ethogram['Walking-Distractibility'] = df_ethogram['Walking-Distractibility'].map(vars_walk_dist)
-
+df_ethogram['Walking-Distractibility'] = df_ethogram['Walking-Distractibility'].map(vars_walking)
+df_ethogram['Petting-Holding dog'] =df_ethogram['Petting-Holding dog'].map(vars_petting)
+df_ethogram['Petting-Holding dog']
 for (dog, date) in df_ethogram[df_ethogram.duplicated(subset = ['Dog code', 'Data Collection Date'])].loc[:,('Dog code', 'Data Collection Date')].drop_duplicates().values:
     print(df_ethogram[(df_ethogram['Dog code'] == dog) & \
         (df_ethogram['Data Collection Date'] == date)].mean())
 
 df_ethogram.groupby(['Dog code', 'Data Collection Number']).mean()
 
+
 cols = df_ethogram.columns
 #save to csv file
-df_ethogram.to_csv('E:\\Study\\Ethogram\\20-02-17_Ethogram.csv')
+df_ethogram.to_csv('%s\\20-05-20_Ethogram.csv' % my_dir )
 
