@@ -3,7 +3,7 @@ import re
 import datetime as dt
 import numpy as np
 
-my_dir = "C:\\Users\\marinara.marcato\\Data\\Ethogram"
+my_dir = "C:\\Users\\marinara.marcato\\Data\\Ethogram\\Researchers"
 
 def import_ethogram(base_dir):
     df = pd.read_csv(("%s\\20-02-17_Ethogram-Researchers-FormResponses.csv" % base_dir), parse_dates = ['Timestamp', 'Data Collection Date'])
@@ -61,7 +61,7 @@ def process(times, method):
             for time in times.split(";"):
                 #print(time)
                 if "-" in time:
-                    ts = re.findall("\d\d:\d\d", time)
+                    ts = re.findall('\d\d:\d\d', time)
                     #print(ts)
                     d = d + dt.datetime.strptime(ts[1], "%M:%S") - dt.datetime.strptime(ts[0], "%M:%S")
                     print(d)

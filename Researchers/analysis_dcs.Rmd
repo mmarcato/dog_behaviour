@@ -6,7 +6,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-install.packages("rstatix")
+install.packages("ggpubr")
 library(DescTools)
 library(ggplot2)
 library(dplyr)
@@ -70,18 +70,8 @@ class(result[["statistic"]])
 
 for (var in na.omit(vars[vars$Test == "Wilcoxon", "Variable"])){
   print(var)
-  #group_by(dcs, Data.Collection.Number) %>% summarise(
-   # median = median(var, na.rm = TRUE),
-    #IQR = IQR(var, na.rm = TRUE))
+  print(aggregate(var ~ Data.Collection.Number, data = dcs, summary))
 }    
-dcs %>%
-  group_by(Sex) %>%
-  get_summary_stats(Isolation.Response..Barking., type = "median_iqr")
-
-r = group_by(dcs, Sex) %>% summarise(
-    mean = mean(Isolation.Response..Barking., na.rm = TRUE),
-    median = median(Isolation.Response..Barking., na.rm = TRUE),
-    IQR = IQR(Isolation.Response..Barking., na.rm = TRUE))
 
 for (var in na.omit(vars[vars$Test == "Wilcoxon", "Variable"])){
   print(str(var))
