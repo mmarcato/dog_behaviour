@@ -23,7 +23,7 @@ Hazel and Conghal.
 The ethogram comprised of the following types and number of variables.
 
 ```{r, echo = FALSE}
-setwd("C://Users//marinara.marcato//Data//Ethogram//")
+setwd("C://Users//marinara.marcato//Data//Ethogram//Researchers")
 data <- read.csv('20-02-26_Ethogram.csv')
 
 # dataframe column names
@@ -205,7 +205,7 @@ dc2_ordinal_sign = dc2_ordinal[dc2_ordinal[,4]<0.05, ]
 dc1_ordinal_ph = posthoc_between_groups(dc1, unlist(dc1_ordinal_sign[,1]))
 dc2_ordinal_ph = posthoc_between_groups(dc2, unlist(dc2_ordinal_sign[,1]))
 
-# saves outputs to file
+# prints outputs to file
 cat('DC 1 - Difference between litters')
 print(dc1_ordinal_sign)
 cat('DC 2 - Difference between litters')
@@ -221,7 +221,7 @@ plot_ordinal <- function(df, var){
 
 for (var in unlist(dc1_ordinal_sign[,1])){
   print (var)
-  plot_ordinal(dc2, var)   
+  plot_ordinal(dc1, var)   
 }
 ```
 
@@ -249,11 +249,12 @@ dc2_count_sign = dc2_count[dc2_count[,4]<0.05, ]
 
 Testing significance of all CATEGORICAL variables considering GROUPS
 ```{r, echo = TRUE}
+
 categorical_between_groups <- function(df){
   result = c()
   for (variable in categorical){
     if (length(unique(df[,variable]))>1){
-      r = chisq.test(df[, variable], df$Litter)
+      r = chisq.test(df[, variable], df$Litter, simulate.p.value=TRUE)
       #print(c(variable, r[3]))
       result = rbind(result, c(variable, r[1], r[2], r[3]))
     }
@@ -295,18 +296,16 @@ ord_dcs_sig = ordinal_within_groups(dcs)
 ```
 
 
-> UNDERSTAND THE OUTPUT:
+UNDERSTAND THE OUTPUT:
 most of the variables result in a model with 1 factor
 while, some of them result in a model with 2 factors
 
-
+#### Visualising overall resposes in DC1 and DC2
 ```{r, echo = TRUE}
-
 # barplot of behaviour per DC
 for (variable in ordinal){
   par(mfrow = c(1, 3))
   for(i in unique(dcs$Data.Collection.Number)) {
-    print (i)
     barplot(table(dcs[dcs$Data.Collection.Number == i, variable]), space = 1,
          xlab = "",
          col = "gray50",
