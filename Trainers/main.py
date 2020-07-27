@@ -7,7 +7,7 @@ my_dir = "C:\\Users\\marinara.marcato\\Data\\Ethogram\\Trainers"
 
 
 def import_ethogram(base_dir):
-    df = pd.read_csv(("%s\\20-06-03_Ethogram-Trainers-FormResponses.csv" % base_dir), parse_dates = ['Timestamp', 'Data Collection Date'])
+    df = pd.read_csv(("%s\\20-06-23_Ethogram-Trainers-FormResponses.csv" % base_dir), parse_dates = ['Timestamp', 'Data Collection Date'])
     return df
 
 def import_summary(base_dir):
@@ -34,20 +34,17 @@ def add_info(df, df_training, df_summary):
 
     # creating a dictionary with key = Code and value = Name
     map_name = dict(df_summary['Info'][['Code', 'Name']].values)
+    # creating a dictionary with key = Code and value = Sex
     map_sex = dict(df_summary['Info'][['Code', 'Sex']].values)
-    # mapping the dictionary with the column 'Code' to create column 'Name
-    df['Name'] = df['Dog code'].map(map_name)
-    df['Sex'] = df['Dog code'].map(map_sex)
-    df['Litter'] = df['Name'].str[:1]
     # creating a dictionary with key = Name and value = Status
     map_status = pd.Series(df_training['Training Outcome']['Status'].values, index=df_training['Info']['Name']).to_dict()
-    df['Status'] = df['Name'].map(map_status)
-    df.set_index(['Name'], inplace = True)
 
-    # changing the order of the columns
-    cols = df.columns.tolist()
-    cols = cols[:2] + cols[-5:] + cols[2:-5]
-    df = df[cols]
+    # mapping the dictionaries above with the column 'Code' or 'Name' columns
+    df.insert(0, 'Name', df['Dog code'].map(map_name))
+    df.insert(1, 'Litter',  df['Name'].str[:1])
+    df.insert(2, 'Sex', df['Dog code'].map(map_sex))
+    df.insert(2,'Status',  df['Name'].map(map_status))
+    df.set_index(['Name'], inplace = True)
     return df
 
 def process(times, method):
@@ -125,8 +122,8 @@ def categories2numbers(df):
     'Crate-Self-Modulation',
     'Petting-Handler-Stimulus',
     'Petting-Handler-Holding dog',
-    'Petting-Confidence - During',
-    'Petting-Responsiveness - After',
+    'Petting-Confidence-During',
+    'Petting-Responsiveness-After',
     'Isolation-Response [Time oriented]',
     'Isolation-Response [Exploration]',
     'Isolation-Response [Unsettled/Pacing]',
@@ -138,9 +135,6 @@ def categories2numbers(df):
     
     for col in cols:
         df[col] = df[col].str[:1]
-
-    for col in cols:
-        print(df[col].head(5))
     return(df)
 
 def categories2numbers_mapping(df):
@@ -162,6 +156,7 @@ df_summary = import_summary(my_dir)
 df_training = import_training(my_dir)   
 df_ethogram = import_ethogram(my_dir)
 
+
 # processing dataframes
 df_ethogram = add_info(df_ethogram, df_training, df_summary)
 df_ethogram = categories2numbers(df_ethogram)
@@ -178,6 +173,7 @@ df_ethogram = categories2numbers(df_ethogram)
 
 
 #save to csv file
-df_ethogram.to_csv('%s\\20-06-04_Ethogram.csv' % my_dir )
+df_ethogram.to_csv('%s\\20-06-23_Ethogram.csv' % my_dir )
+
 
 

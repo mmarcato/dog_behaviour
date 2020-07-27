@@ -7,10 +7,9 @@
 library(DescTools)
 library(ggplot2)
 library(dplyr)
-
 # import data
 setwd("E://Study//Ethogram")
-data <- read.csv('20-02-26_Ethogram.csv')
+data <- read.csv('20-05-20_Ethogram.csv')
 
 # --------------------------------------------------------------------#
 #                       COLUMNS PER DATA TYPE                         #

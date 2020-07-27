@@ -77,14 +77,8 @@ for (var in na.omit(vars[vars$Test == "Wilcoxon", "Variable"])){
   print(aggregate(var ~ Data.Collection.Number, data = dcs, summary))
 }    
 
-for (var in na.omit(vars[vars$Test == "Wilcoxon", "Variable"])){
-  print(str(var))
-  print(wilcox.test(dcs[dcs$Data.Collection.Number == 1 , var],  dcs[dcs$Data.Collection.Number == 2, var], paired = TRUE)[1:3])
-}
-
 
 for (var in na.omit(vars[vars$Test == "Wilcoxon", "Variable"])){
-
   print(str(var))
   print(wilcox.test(dcs[dcs$Data.Collection.Number == 1 , var],  dcs[dcs$Data.Collection.Number == 2, var], paired = TRUE)[1:3])
 }
@@ -94,7 +88,7 @@ wilcox <- function(var){
   print(var)
   wilcox.test(dcs[dcs$Data.Collection.Number == 1 , var],  dcs[dcs$Data.Collection.Number == 2, var], paired = TRUE)
 }
-stats <- function(test, var){
+tests <- function(test, var){
   if (!is.na(test)){
     if (test == 'Wilcoxon'){
         r = wilcox.test(dcs[dcs$Data.Collection.Number == 1 , as.character(var)],  dcs[dcs$Data.Collection.Number == 2, as.character(var)], paired = TRUE)
@@ -117,7 +111,7 @@ stats <- function(test, var){
   return(NA)
 }
 
-stats %>% mutate(Result = mapply(FUN = stats, test = vars$Test, var = vars$Variable))
+dcs %>% mutate(Result = mapply(FUN = tests, test = vars$Test, var = vars$Variable))
 
 dc1 = dcs[dcs$Data.Collection.Number == 1 , "Tea.Towel.First.Response..Indifferent."]
 dc2 = dcs[dcs$Data.Collection.Number == 2, "Tea.Towel.First.Response..Indifferent."]
