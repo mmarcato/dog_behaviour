@@ -3,7 +3,7 @@ import re
 import datetime as dt
 import numpy as np
 
-my_dir = "C:\\Users\\marinara.marcato\\Data\\Ethogram\\Researchers"
+my_dir = "C:\\Users\\marinara.marcato\\Project\\Data\\Ethogram\\Researchers"
 
 def import_ethogram(base_dir):
     df = pd.read_csv(("%s\\20-02-17_Ethogram-Researchers-FormResponses.csv" % base_dir), parse_dates = ['Timestamp', 'Data Collection Date'])

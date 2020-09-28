@@ -27,7 +27,7 @@ The ethogram comprised of the following types and number of variables.
 ```{r, echo = FALSE}
 setwd("C://Users//marinara.marcato//Data//Ethogram//Researchers")
 dcs <- read.csv('dcs.csv', stringsAsFactors=FALSE)
-vars <- read.csv(file = 'variables.csv', stringsAsFactors=FALSE)
+vars <- read.csv(file = 'Variables_Researchers.csv', stringsAsFactors=FALSE)
 
 # Adding a column to df vars for Test 
 vars = vars %>% mutate(Test = case_when(
@@ -42,7 +42,6 @@ Number of dogs with DC1 and DC2:
 ```{r, echo = FALSE}
 print(length(unique(dcs$Name)))
 ```
-
 
 Performs statistical tests. Wilcoxon and Chisq:
 ```{r, echo = FALSE}
