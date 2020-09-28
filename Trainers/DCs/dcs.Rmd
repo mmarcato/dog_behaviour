@@ -1,0 +1,53 @@
+---
+title: "Student Ethogram - Data Analysis"
+author: "Marinara Marcato"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+#install.packages("ggpubr")
+library(DescTools)
+library(ggplot2)
+library(dplyr)
+library(plyr)
+
+# not sure if necessary
+library(tidyverse)
+library(rstatix)
+library(ggpubr)
+```
+
+## Introduction 
+This document shows the data analysis carried out to investigate 
+dog's behavioral data considering the ethograms filled out by students
+Susan Turtle and Allyce Keogh.
+
+
+## Data Exploration
+### Columns: Variables
+The ethogram comprised of the following types and number of variables.
+
+```{r, echo = FALSE}
+setwd("C://Users//marinara.marcato//Data//Ethogram//Trainers")
+data <- read.csv('20-06-23_Ethogram-Manual.csv')
+vars <- read.csv('Variables_Trainers.csv')
+
+# print the number of variables per data type
+print(table(vars$Type))
+
+# Adding a column to df vars for Test 
+vars = vars %>% mutate(Test = case_when(
+        Type == "count" ~ "Wilcoxon",
+        Type == "ordinal" ~ "Wilcoxon", 
+        Type == "categorical" ~ "Chisq"))
+```
+
+
+### Rows: Dogs
+Total number of dogs with DC1 and DC2:
+```{r, echo = FALSE}
+print(length(unique(data[data$Data.Collection.Number ==1, 'Name'])))
+print(length(unique(data[data$Data.Collection.Number ==2, 'Name'])))
+```
+
