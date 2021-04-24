@@ -113,7 +113,7 @@ df_ethogram = calculate_behaviours(df_ethogram)
 df_ethogram = categories2numbers(df_ethogram)
 
 # drop rows that Marinara assessed 
-# df_ethogram = df_ethogram[~df_ethogram['Assessor'].isin(['Marinara'])]
+df_ethogram = df_ethogram[~df_ethogram['Assessor'].isin(['Marinara'])]
 # to be developed:
     # drop the columns to keep the same assessor in two data collections
     #for (code, dc) in df_ethogram[df_ethogram.duplicated(subset = ['Dog code', 'Data Collection Number'])].loc[:,('Dog code', 'Data Collection Date')].drop_duplicates().values:
@@ -138,4 +138,4 @@ df = df[['Name','Code','Data Collection Number', 'Assessor',
   + df.columns.to_list()[15:]]
   
 #save to csv file
-df.to_csv('{}\\21-03-10_Ethogram-Researchers.csv'.format(my_dir), index = False)
+df.to_csv('{}\\21-03-11_Ethogram-Researchers.csv'.format(my_dir), index = False)

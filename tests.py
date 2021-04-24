@@ -1,15 +1,41 @@
-import pandas as pd
-my_dir = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\dfs"
-df = pd.read_csv('%s\\21-03-10_Ethogram-Trainers.csv' % my_dir)
-
 ################################     Duplicates       ################################
-# define a subset to find duplicate combinations of Dog, Data Collection and Assessor
-subset = ['Dog code', 'Data Collection Number', 'Assessor']
-# print the duplicates considering the subsets
-print(df[df.duplicated(subset = subset)].loc[:,subset].drop_duplicates().values)
-# drop duplicates considering the subset while keeping the last occurence
-df.drop_duplicates(subset = subset,\
-    keep = 'last', inplace = True, ignore_index = True)
+import pandas as pd
+my_dir = 'C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\dfs'
+
+def duplicates_to_csv (r_name, subset, p_name, df_dir = my_dir):
+    '''
+        description:
+            imports dataframe r_name in df_dir   
+            creates new dataframe with duplicates based on subsets
+            saves that dataframe as p_name in df_dir
+        variables:
+            r_name = string raw dataframe file name
+            subset = list, subset to find duplicates
+            p_name = string, processed resulting dataframe file name
+            df_dir = string, path to directory where dataframes are   
+    '''
+    df = pd.read_csv('{}\\{}.csv'.format(df_dir, r_name))
+    # create and sort dataframe containing only duplicates considering the given subset
+    df = df.loc[df.duplicated(subset = subset, keep = False)]
+    df.sort_values(subset, inplace = True)
+    # saves dataframe considering the given name and directory 
+    df.to_csv('{}\\{}.csv'.format(df_dir, p_name), index = False)
+
+duplicates_to_csv(r_name = '21-03-11_Ethogram-Trainers', 
+                subset = ['Code', 'Data Collection Number', 'Assessor'], 
+                p_name = '21-03-11_Ethogram-Trainers_Intra-Rater') 
+
+duplicates_to_csv(r_name = '21-03-11_Ethogram-Trainers', 
+                subset = ['Code', 'Data Collection Number'], 
+                p_name = '21-03-11_Ethogram-Trainers_Inter-Rater')
+
+duplicates_to_csv(r_name = '21-03-10_Ethogram-Researchers', 
+                subset = ['Code', 'Data Collection Number', 'Assessor'], 
+                p_name = '21-03-11_Ethogram-Researchers_Intra-Rater') 
+
+duplicates_to_csv(r_name = '21-03-10_Ethogram-Researchers', 
+                subset = ['Code', 'Data Collection Number'], 
+                p_name = '21-03-11_Ethogram-Researchers_Inter-Rater')
 
 ################################     Data Types       ################################
 # visualise columns per data type

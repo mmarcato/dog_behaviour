@@ -6,7 +6,7 @@ import numpy as np
 my_dir = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\dfs"
 
 def import_ethogram(base_dir):
-    df = pd.read_csv("{}}\\Ethogram - Trainers.csv".format(base_dir))
+    df = pd.read_csv("{}\\Ethogram - Trainers.csv".format(base_dir))
     return df
 
 def import_dogs(base_dir):
@@ -103,6 +103,6 @@ df = df[['Name','Code','Data Collection Number', 'Assessor',
  'Data Collection Date', 'End Date', 'Status', 'Timestamp'] 
   + df.columns.to_list()[15:]]
 #save to csv file
-df.to_csv('%s\\21-03-10_Ethogram-Trainers.csv' % my_dir , index = False)
+df.to_csv('%s\\21-03-11_Ethogram-Trainers.csv' % my_dir , index = False)
 
 ################################      Main End       ################################
