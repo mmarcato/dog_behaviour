@@ -1,0 +1,136 @@
+"","Variable","Subset","Type","Test","dc1_outcome","dc2_outcome","dc1_sign","dc2_sign"
+"1","Name","info","info",NA,NA,NA,NA,NA
+"2","Code","info","info",NA,NA,NA,NA,NA
+"3","Data.Collection.Number","info","info",NA,NA,NA,NA,NA
+"4","Data.Collection.Date","info","info",NA,NA,NA,NA,NA
+"5","Assessor","info","info",NA,NA,NA,NA,NA
+"6","Breed","info","info",NA,NA,NA,NA,NA
+"7","Sex","info","info",NA,NA,NA,NA,NA
+"8","Litter","info","info",NA,NA,NA,NA,NA
+"9","Source","info","info",NA,NA,NA,NA,NA
+"10","PR.Sup","info","info",NA,NA,NA,NA,NA
+"11","DOB","info","info",NA,NA,NA,NA,NA
+"12","DOA","info","info",NA,NA,NA,NA,NA
+"13","End.Date","info","info",NA,NA,NA,NA,NA
+"14","Status","info","info",NA,NA,NA,NA,NA
+"15","Familiarisation.Start.Time..MM.SS.","familiarisation","time",NA,NA,NA,NA,NA
+"16","Familiarisation.Response..Oriented.to.Handler.","familiarisation","ordinal","Wilcoxon",0.642003548049832,0.213663656449285,0,0
+"17","Familiarisation.Response..Exploration.","familiarisation","ordinal","Wilcoxon",0.372837426072987,0.568511768994426,0,0
+"18","Familiarisation.Response..Waiting.","familiarisation","ordinal","Wilcoxon",0.546864177923505,0.247865678448026,0,0
+"19","Familiarisation.Comments","familiarisation","comments",NA,NA,NA,NA,NA
+"20","Call.Back.Start.Time..MM.SS.","familiarisation","time",NA,NA,NA,NA,NA
+"21","Call.Back.Response","familiarisation","ordinal","Wilcoxon",0.947889406705133,0.421432354988784,0,0
+"22","Call.Back.Comments","familiarisation","comments",NA,NA,NA,NA,NA
+"23","Walking.Start.Time..MM.SS.","walking","time",NA,NA,NA,NA,NA
+"24","Walking.Distractibility","walking","ordinal","Wilcoxon",0.950773479860258,0.86394871037034,0,0
+"25","Walking.Pull.on.leash","walking","ordinal","Wilcoxon",0.241075532682525,0.00575453253701157,0,1
+"26","Walking.Pull.strength","walking","ordinal","Wilcoxon",0.29280522025666,0.00344804220222737,0,1
+"27","Walking.Initiative","walking","ordinal","Wilcoxon",0.506585971751513,0.325879195158082,0,0
+"28","Walking.Comments","walking","comments",NA,NA,NA,NA,NA
+"29","Standing.Start.Time..MM.SS.","standing","time",NA,NA,NA,NA,NA
+"30","Standing.Response","standing","ordinal","Wilcoxon",0.691206571988825,0.454500253138384,0,0
+"31","Standing.Comments","standing","comments",NA,NA,NA,NA,NA
+"32","Sitting.Start.Time..MM.SS.","sitting","time",NA,NA,NA,NA,NA
+"33","Sitting.Response","sitting","ordinal","Wilcoxon",0.924284395535188,0.942987924383716,0,0
+"34","Sitting.Comments","sitting","comments",NA,NA,NA,NA,NA
+"35","Lying.Start.Time..MM.SS.","lying","time",NA,NA,NA,NA,NA
+"36","Lying.Response","lying","ordinal","Wilcoxon",0.455120415408201,0.622678823673056,0,0
+"37","Lying.Settled","lying","ordinal","Wilcoxon",0.329377521367352,0.941436790844624,0,0
+"38","Lying.Finish.Time..MM.SS.","lying","time",NA,NA,NA,NA,NA
+"39","Lying.Comments","lying","comments",NA,NA,NA,NA,NA
+"40","Body.check.Start.Time..MM.SS.","body","time",NA,NA,NA,NA,NA
+"41","Body.check.Table","body","ordinal","Wilcoxon",0.0924764770492216,0.0836089847440316,0,0
+"42","Body.check.Response","body","ordinal","Wilcoxon",0.733298324643846,0.988327603549605,0,0
+"43","Body.check.General..Mouths.","body","categorical","Chisq",1,NA,0,NA
+"44","Body.check.General..Licks.","body","categorical","Chisq",0.673663168415792,1,0,0
+"45","Body.check.Finish.Time..MM.SS.","body","time",NA,NA,NA,NA,NA
+"46","Body.Check.Comments","body","comments",NA,NA,NA,NA,NA
+"47","Tea.Towel.Start.Time..MM.SS.","towel","time",NA,NA,NA,NA,NA
+"48","Tea.Towel.First.Response..Indifferent.","towel","categorical","Chisq",0.0644677661169415,0.163418290854573,0,0
+"49","Tea.Towel.First.Response..Change.from.Neutral.","towel","categorical","Chisq",0.239880059970015,0.0944527736131934,0,0
+"50","Tea.Towel.First.Response..Turns.head.","towel","categorical","Chisq",0.718140929535232,0.432283858070965,0,0
+"51","Tea.Towel.First.Response..Attempts.to.Removes.towel.by.moving.","towel","categorical","Chisq",1,1,0,0
+"52","Tea.Towel.First.Response..Attempts.to.Removes.towel.with.mouth.","towel","categorical","Chisq",0.577211394302849,0.747126436781609,0,0
+"53","Tea.Towel.First.Response..Plays.","towel","categorical","Chisq",0.697151424287856,1,0,0
+"54","Tea.Towel.Second.Response..Indifferent.","towel","categorical","Chisq",0.539230384807596,0.0119940029985007,0,1
+"55","Tea.Towel.Second.Response..Turns.head.","towel","categorical","Chisq",0.384307846076962,0.179910044977511,0,0
+"56","Tea.Towel.Second.Response..Change.from.Neutral.","towel","categorical","Chisq",0.541729135432284,0.0304847576211894,0,1
+"57","Tea.Towel.Second.Response..Attempts.to.Removes.towel.by.moving.","towel","categorical","Chisq",0.565217391304348,1,0,0
+"58","Tea.Towel.Second.Response..Attempts.to.Removes.towel.with.mouth.","towel","categorical","Chisq",0.389805097451274,0.307846076961519,0,0
+"59","Tea.Towel.Second.Response..Plays.","towel","categorical","Chisq",1,0.679160419790105,0,0
+"60","Tea.Towel.Finish.Time..MM.SS.","towel","time",NA,NA,NA,NA,NA
+"61","Tea.Towel.Comments","towel","comments",NA,NA,NA,NA,NA
+"62","Distractions.Start.Time..MM.SS.","distractions","time",NA,NA,NA,NA,NA
+"63","Distractions.First.Response..Teddy.","distractions","ordinal","Wilcoxon",0.905058950058,0.663272879407627,0,0
+"64","Distractions.First.Response..Human.","distractions","ordinal","Wilcoxon",0.447666729309785,0.611925031190211,0,0
+"65","Distractions.First.Response..Car.","distractions","ordinal","Wilcoxon",0.207940556754115,0.018643837877064,0,1
+"66","Distractions.First.Response..Food.","distractions","ordinal","Wilcoxon",0.644786593277664,0.787478593485092,0,0
+"67","Distractions.Second.Response..Teddy.","distractions","ordinal","Wilcoxon",0.53186416324495,0.701717484617532,0,0
+"68","Distractions.Second.Response..Human.","distractions","ordinal","Wilcoxon",0.719118264367771,0.688236335068308,0,0
+"69","Distractions.Second.Response..Car.","distractions","ordinal","Wilcoxon",0.424819074020098,0.388905519841191,0,0
+"70","Distractions.Second.Response..Food.","distractions","ordinal","Wilcoxon",0.768221312713583,0.669521683922078,0,0
+"71","Distractions.Pull.on.leash","distractions","ordinal","Wilcoxon",0.287058532030587,0.776270668693363,0,0
+"72","Distractions.Human","distractions","ordinal","Wilcoxon",0.367023794737814,0.932231444514266,0,0
+"73","Distractions.Finish.Time..MM.SS.","distractions","time",NA,NA,NA,NA,NA
+"74","Distractions.Comments","distractions","comments",NA,NA,NA,NA,NA
+"75","Kong.Presentation.Start.Time..MM.SS.","kong","time",NA,NA,NA,NA,NA
+"76","Kong.Presentation.Response","kong","ordinal","Wilcoxon",0.348407680454464,0.73182443624239,0,0
+"77","Kong.Interaction.Start.Time..MM.SS.","kong","time",NA,NA,NA,NA,NA
+"78","Kong.Interaction.Lateralisation","kong","categorical","Chisq",0.0699650174912544,0.602198900549725,0,0
+"79","Kong.Interaction.Response.to.stimulus","kong","ordinal","Wilcoxon",0.733589773996322,0.0225628384854158,0,1
+"80","Kong.Interaction.Response.to.handler","kong","ordinal","Wilcoxon",0.552952280512355,0.460177797582479,0,0
+"81","Kong.Interaction.Back","kong","ordinal","Wilcoxon",0.248848048567392,0.0990464438625819,0,0
+"82","Kong.Interaction.Finish.Time..MM.SS.","kong","time",NA,NA,NA,NA,NA
+"83","Kong.Return.Handler","kong","ordinal","Wilcoxon",0.139369144889307,0.104346810122248,0,0
+"84","Kong.Comments","kong","comments",NA,NA,NA,NA,NA
+"85","Dog.Start.Time..MM.SS.","dog","time",NA,NA,NA,NA,NA
+"86","Dog.Response","dog","ordinal","Wilcoxon",0.898902430990582,0.71563557417296,0,0
+"87","Dog.Call.Back.Response","dog","ordinal","Wilcoxon",0.533043229374278,0.384282002631303,0,0
+"88","Dog.Finish.Time..MM.SS.","dog","time",NA,NA,NA,NA,NA
+"89","Dog.Comments","dog","comments",NA,NA,NA,NA,NA
+"90","Crate.Start.Time..MM.SS.","crate","time",NA,NA,NA,NA,NA
+"91","Crate.Entering","crate","ordinal","Wilcoxon",0.12164981606341,1,0,0
+"92","Crate.Behaviours..Settled.","crate","ordinal","Wilcoxon",0.0944227807380725,0.609335089014597,0,0
+"93","Crate.Behaviours..Sniffing.Exploring..","crate","ordinal","Wilcoxon",0.296975640450181,0.263004728072161,0,0
+"94","Crate.Behaviours..Actively.Seeking.Attention.","crate","ordinal","Wilcoxon",0.0253522188326814,0.212942630396079,1,0
+"95","Crate.Behaviours..Digging.","crate","ordinal","Wilcoxon",0.269533067783077,0.604831129857672,0,0
+"96","Crate.Behaviours..Whining.","crate","ordinal","Wilcoxon",0.166972468837811,0.246982468489864,0,0
+"97","Crate.Behaviours..Barking.","crate","ordinal","Wilcoxon",0.343432965704392,0.290882679220173,0,0
+"98","Crate.Self.Modulation","crate","ordinal","Wilcoxon",0.236221945328517,0.707889871795304,0,0
+"99","Crate.Behaviours..Nudging.Crate.","crate","ordinal","Wilcoxon",0.853817662576053,0.319692078550525,0,0
+"100","Crate.Behaviours..Pawing.","crate","ordinal","Wilcoxon",0.719922155911719,0.115057364699173,0,0
+"101","Crate.Stress","crate","ordinal","Wilcoxon",0.352910904654034,0.948232283294218,0,0
+"102","Crate.Urinating","crate","categorical","Chisq",1,NA,0,NA
+"103","Crate.Finish.Time..MM.SS.","crate","time",NA,NA,NA,NA,NA
+"104","Crate.Comments","crate","comments",NA,NA,NA,NA,NA
+"105","Petting.Start.Time..MM.SS.","petting","time",NA,NA,NA,NA,NA
+"106","Petting.Handler.Stimulus","petting","ordinal","Wilcoxon",0.631807393363694,0.929212927328779,0,0
+"107","Petting.Handler.Holding.dog","petting","ordinal","Wilcoxon",0.622973961124745,0.673606934824727,0,0
+"108","Petting.Confidence.During","petting","ordinal","Wilcoxon",0.425747490665713,0.381912237170122,0,0
+"109","Petting.Finish.Time..MM.SS.","petting","time",NA,NA,NA,NA,NA
+"110","Petting.Responsiveness.After","petting","ordinal","Wilcoxon",0.951065588018521,0.581441410730919,0,0
+"111","Petting.Comments","petting","comments",NA,NA,NA,NA,NA
+"112","Isolation.Start.Time..MM.SS.","isolation ","time",NA,NA,NA,NA,NA
+"113","Isolation.Response..Time.oriented.","isolation ","ordinal","Wilcoxon",0.855266273814446,0.0290123338979291,0,1
+"114","Isolation.Response..Exploration.","isolation ","ordinal","Wilcoxon",0.853550303829172,0.0363394706728354,0,1
+"115","Isolation.Response..Unsettled.Pacing.","isolation ","ordinal","Wilcoxon",0.977572284211472,0.0888999633083423,0,0
+"116","Isolation.Response..Whining.","isolation ","ordinal","Wilcoxon",0.387930141809725,0.299873934839441,0,0
+"117","Isolation.Response..Barking.","isolation ","ordinal","Wilcoxon",0.72118576696874,0.468838165897478,0,0
+"118","Isolation.Urinating","isolation ","categorical","Chisq",NA,1,NA,0
+"119","Isolation.Finish.Time..MM.SS.","isolation ","time",NA,NA,NA,NA,NA
+"120","Isolation.Comments","isolation ","comments",NA,NA,NA,NA,NA
+"121","Reunion.Response","isolation ","ordinal","Wilcoxon",0.78637909673292,0.403261129683363,0,0
+"122","Reunion.Comments","isolation ","comments",NA,NA,NA,NA,NA
+"123","Noise.Time..MM.SS.","noise","time",NA,NA,NA,NA,NA
+"124","Noise.Confidence","noise","ordinal","Wilcoxon",0.502829121827595,0.859876145234732,0,0
+"125","Noise.Comments","noise","comments",NA,NA,NA,NA,NA
+"126","Jumps","behaviours ","unused",NA,NA,NA,NA,NA
+"127","Shakes","behaviours ","unused",NA,NA,NA,NA,NA
+"128","Stretches","behaviours ","unused",NA,NA,NA,NA,NA
+"129","Whines","behaviours ","unused",NA,NA,NA,NA,NA
+"130","Short.Barks","behaviours ","unused",NA,NA,NA,NA,NA
+"131","Continuous.Barks","behaviours ","unused",NA,NA,NA,NA,NA
+"132","Growls","behaviours ","unused",NA,NA,NA,NA,NA
+"133","Scratches","behaviours ","unused",NA,NA,NA,NA,NA
+"134","Grooms","behaviours ","unused",NA,NA,NA,NA,NA
+"135","Yawns","behaviours ","unused",NA,NA,NA,NA,NA

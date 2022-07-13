@@ -1,0 +1,120 @@
+Variable,Subset,Type
+Name,info,info
+Code,info,info
+Data.Collection.Number,info,info
+Data.Collection.Date,info,info
+Assessor,info,info
+Breed,info,info
+Sex,info,info
+Litter,info,info
+Source,info,info
+PR.Sup,info,info
+DOB,info,info
+DOA,info,info
+End.Date,info,info
+Status,info,info
+Familiarisation.Start.Time..MM.SS.,familiarisation,time
+Familiarisation.Response..Oriented.to.Handler.,familiarisation,ordinal
+Familiarisation.Response..Exploration.,familiarisation,ordinal
+Familiarisation.Response..Waiting.,familiarisation,ordinal
+Call.Back.Start.Time..MM.SS.,familiarisation,time
+Call.Back.Response,familiarisation,ordinal
+Walking.Start.Time..MM.SS.,walking,time
+Walking.Distractibility,walking,ordinal
+Walking.Pull.on.leash,walking,ordinal
+Walking.Pull.strength,walking,ordinal
+Walking.Initiative,walking,ordinal
+Standing.Start.Time..MM.SS.,standing,time
+Standing.Attempts,standing,count
+Standing.Response,standing,ordinal
+Sitting.Start.Time..MM.SS.,sitting,time
+Sitting.Attempts,sitting,count
+Sitting.Response,sitting,ordinal
+Lying.Start.Time..MM.SS.,sitting,time
+Lying.Attempts,lying,count
+Lying.Response,lying,ordinal
+Lying.Settled,lying,ordinal
+Lying.Finish.Time..MM.SS.,lying,time
+Body.check.Start.Time..MM.SS.,body,time
+Body.check.Response,body,ordinal
+Body.check.General..Mouths.,body,categorical
+Body.check.General..Licks.,body,categorical
+Body.check.Finish.Time..MM.SS.,body,time
+Tea.Towel.Start.Time..MM.SS.,towel,time
+Tea.Towel.First.Response..Indifferent.,towel,categorical
+Tea.Towel.First.Response..Turns.head.,towel,categorical
+Tea.Towel.First.Response..Attempts.to.Removes.towel.by.moving.,towel,categorical
+Tea.Towel.First.Response..Attempts.to.Removes.towel.with.mouth.,towel,categorical
+Tea.Towel.First.Response..Plays.,towel,categorical
+Tea.towel.Second.Response..Indifferent.,towel,categorical
+Tea.towel.Second.Response..Turns.head.,towel,categorical
+Tea.towel.Second.Response..Attempts.to.Removes.towel.by.moving.,towel,categorical
+Tea.towel.Second.Response..Attempts.to.Removes.towel.with.mouth.,towel,categorical
+Tea.towel.Second.Response..Plays.,towel,categorical
+Tea.Towel.Finish.Time..MM.SS.,towel,time
+Distractions.Start.Time..MM.SS.,distractions,time
+Distractions.First.Response..Object.,distractions,ordinal
+Distractions.First.Response..Human.,distractions,ordinal
+Distractions.First.Response..Car.,distractions,ordinal
+Distractions.First.Response..Food.,distractions,ordinal
+Distractions.Second.Response..Object.,distractions,ordinal
+Distractions.Second.Response..Human.,distractions,ordinal
+Distractions.Second.Response..Car.,distractions,ordinal
+Distractions.Second.Response..Food.,distractions,ordinal
+Distractions.Pull.on.leash,distractions,ordinal
+Distractions.Pull.strength,distractions,ordinal
+Distractions.Finish.Time..MM.SS.,kong,time
+Kong.Concentration.Start.Time..MM.SS.,kong,time
+Kong.Concentration.Response,kong,ordinal
+Kong.Retrieve.Start.Time..MM.SS.,kong,time
+Kong.Retrieve.Lateralisation,kong,categorical
+Kong.Retrieve.Response.to.stimulus,kong,ordinal
+Kong.Retrieve.Response.to.assessor,kong,categorical
+Kong.Retrieve.Back,kong,ordinal
+Kong.Retrieve.Finish.Time..MM.SS.,kong,time
+Dog.Start.Time..MM.SS.,dog,time
+Dog.Response,dog,ordinal
+Dog.Call.Back.Response,dog,ordinal
+Dog.Finish.Time..MM.SS.,dog,time
+Crate.Start.Time..MM.SS.,crate,time
+Crate.Entering,crate,ordinal
+Crate.Behaviours..Relaxing.,crate,ordinal
+Crate.Behaviours..Sniffing.Exploring.,crate,ordinal
+Crate.Behaviours..Attention.Seeking.,crate,ordinal
+Crate.Behaviours..Digging.,crate,ordinal
+Crate.Behaviours..Licking.Mouthing.,crate,ordinal
+Crate.Behaviours..Whining.,crate,ordinal
+Crate.Behaviours..Barking.,crate,ordinal
+Crate.Response,crate,ordinal
+Crate.Urinating,crate,unused
+Crate.Finish.Time..MM.SS.,crate,time
+Petting.Start.Time..MM.SS.,petting,time
+Petting.Stimulus,petting,ordinal
+Petting.Holding.dog,petting,ordinal
+Petting.Finish.Time..MM.SS.,petting,time
+Isolation.Start.Time..MM.SS.,isolation ,time
+Isolation.Response..Time.oriented.,isolation ,ordinal
+Isolation.Response..Exploration.,isolation ,ordinal
+Isolation.Response..Unsettled.Locomotion.,isolation ,ordinal
+Isolation.Response..Whining.,isolation ,ordinal
+Isolation.Response..Barking.,isolation ,ordinal
+Isolation.Urinating,isolation ,unused
+Isolation.Finish.Time..MM.SS.,isolation ,time
+Noise.Time..MM.SS.,behaviours ,time
+Jumps,behaviours ,time
+Shakes,behaviours ,time
+Stretches,behaviours ,time
+Whines,behaviours ,time
+Short.Barks,behaviours ,time
+Continuous.Barks,behaviours ,time
+Growls,behaviours ,time
+Scratches,behaviours ,time
+Grooms,behaviours ,time
+Yawns,behaviours ,time
+Short.Barks.Count,behaviours ,count
+Continuous.Barks.Duration,behaviours ,unused
+Continuous.Barks.Count,behaviours ,unused
+Whines.Duration,behaviours ,count
+Whines.Count,behaviours ,count
+Shakes.Count,behaviours ,count
+Jumps.Count,behaviours ,unused

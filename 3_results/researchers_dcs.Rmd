@@ -1,5 +1,5 @@
 ---
-title: "Student Ethogram - Data Analysis"
+title: "Researchers Ethogram - DC1 & DC2"
 author: "Marinara Marcato"
 output: html_document
 ---
@@ -26,28 +26,48 @@ Hazel and Conghal!
 ### Columns: Variables
 The ethogram comprised of the following types and number of variables.
 ```{r, echo = FALSE}
-dcs <- read.csv('data//1_processed//Researchers_dcs.csv', stringsAsFactors=FALSE)
-vars <- read.csv('data//1_processed//Researchers_variables.csv', stringsAsFactors=FALSE)
+dcs <- read.csv('0_data//2_analysis//2021-05-03_Ethogram-Researchers-DCS.csv', stringsAsFactors=FALSE)
+vars <- read.csv('0_data//0_raw//ethogram-variables-researchers.csv', stringsAsFactors=FALSE)
 
+# importing the data dataset to make sure that I found all the ethograms
+# 48 dog have DC2 video scored, but 2 of those don't have their DC1 video scored
+data <- read.csv('0_data//0_raw//Data Collection - Data.csv',  stringsAsFactors=FALSE, skip = 1 )
+
+
+# print the number of variables per data type
+print(table(vars$Type))
 # Adding a column to df vars for Test 
+
+#### DOUBLE CHECK WHY PAYS (CHISQ) TEST RESULT IS NA
 vars = vars %>% mutate(Test = case_when(
         Type == "count" ~ "Wilcoxon",
         Type == "ordinal" ~ "Wilcoxon", 
         Type == "categorical" ~ "Chisq"))
-# print the number of variables per data type
-print(table(vars$Type))
 ```
 ### Rows: Dogs
 Number of dogs with DC1 and DC2:
 ```{r, echo = FALSE}
+setdiff(unique(data[data$Researcher.Ethogram.1 =='Done', 'Name']),unique(dcs$Name) )
 print(length(unique(dcs$Name)))
 ```
 
-Performs statistical tests. Wilcoxon and Chisq:
-```{r, echo = FALSE}
+## Data Analysis
+Hypothesis testing: investigate difference in behaviour between DC1 and DC2 for the same dog, considering all behavioural variables. 
+The following statistical tests were performed considering the variable type  <br>
+Wilcoxon -> Count, Ordinal = 41 variables in total<br>
+Chiqs -> Categorical = 14 variables in total<br>
+
+```{r echo = FALSE}
+cat('Count\n', paste(vars[vars$Type == 'count', 'Variable'], collapse = ','))
+cat('Ordinal\n', paste(vars[vars$Type == 'ordinal', 'Variable'], collapse = ','))
+cat('Categorical', paste(vars[vars$Type == 'categorical', 'Variable'], collapse = ','))
+```
+```{r include = FALSE}
+
 stats <- function(test, var){
   if (!is.na(test)){
     if (test == 'Wilcoxon'){
+        print(var)
         r = wilcox.test(dcs[dcs$Data.Collection.Number == 1 , var],  dcs[dcs$Data.Collection.Number == 2, var], paired = TRUE)
         return(r$p.value)
     } else if (test == 'Chisq'){
@@ -67,8 +87,12 @@ stats <- function(test, var){
 
 vars = vars %>% mutate(Result = mapply(FUN = stats, test = vars$Test, var = vars$Variable))
 vars$Result = as.numeric(vars$Result)
+```
+## Results
+Results are saved in a file (researcher_dcs.csv). Below are variable with statistically significant results. <br>
+It means that dogs showed a statistically different behaviour taking DC1 at Week 3 and DC2 Week 10. 
+```{r, echo = FALSE}
 vars$Sign = ifelse(vars$Result<0.05, 1, 0)
 unique(vars[vars$Sign == 1, 'Variable'])
-write.csv(vars,"data//2_analysis//Researchers_dcs.csv")
+write.csv(vars,"0_data//3_results//researchers_dcs.csv")
 ```
-

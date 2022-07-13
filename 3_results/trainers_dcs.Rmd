@@ -1,5 +1,5 @@
 ---
-title: "Student Ethogram - Data Analysis"
+title: "Trainers Ethogram - DC1 & DC2 "
 author: "Marinara Marcato"
 output: html_document
 ---
@@ -22,7 +22,7 @@ library(ggpubr)
 ## Introduction 
 This document shows the data analysis carried out to investigate 
 dog's behavioral data considering the ethograms filled out by trainers
-Susan Turtle and Allyce Keogh.
+two trainers.
 
 
 ## Data Exploration
@@ -30,8 +30,8 @@ Susan Turtle and Allyce Keogh.
 The ethogram comprised of the following types and number of variables.
 
 ```{r, echo = FALSE}
-dcs <- read.csv('data//1_processed//Trainers_dcs.csv', stringsAsFactors=FALSE)
-vars <- read.csv('data//1_processed//Trainers_variables.csv', stringsAsFactors=FALSE)
+dcs <- read.csv('0_data//2_analysis//2021-05-03_Ethogram-Trainers-DCS.csv', stringsAsFactors=FALSE)
+vars <- read.csv('0_data//0_raw//ethogram-variables-trainers.csv', stringsAsFactors=FALSE)
 
 # print the number of variables per data type
 print(table(vars$Type))
@@ -51,8 +51,19 @@ print(length(unique(dcs[dcs$Data.Collection.Number ==1, 'Name'])))
 print(length(unique(dcs[dcs$Data.Collection.Number ==2, 'Name'])))
 ```
 
-Performs statistical tests. Wilcoxon and Chisq:
-```{r, echo = FALSE}
+## Data Analysis
+Hypothesis testing: investigate difference in behaviour between DC1 and DC2 for the same dog, considering all behavioural variables. 
+The following statistical tests were performed considering the variable type  <br>
+Wilcoxon -> Ordinal = 53 variables in total<br>
+Chiqs -> Categorical = 17 variables in total<br>
+
+```{r echo = FALSE}
+cat('Count\n', paste(vars[vars$Type == 'count', 'Variable'], collapse = ','))
+cat('Ordinal\n', paste(vars[vars$Type == 'ordinal', 'Variable'], collapse = ','))
+cat('Categorical', paste(vars[vars$Type == 'categorical', 'Variable'], collapse = ','))
+```
+
+```{r, include = FALSE}
 stats <- function(test, var){
     print(var)
     if (!is.na(test)){
@@ -77,7 +88,18 @@ stats <- function(test, var){
 }
 vars = vars %>% mutate(Result = mapply(FUN = stats, test = vars$Test, var = vars$Variable))
 vars$Result = as.numeric(vars$Result)
+```
+
+## Results
+Results are saved in a file (trainers_dcs.csv). Below are variable with statistically significant results. <br>
+It means that dogs showed a statistically different behaviour taking DC1 at Week 3 and DC2 Week 10. 
+```{r, echo = FALSE}
 vars$Sign = ifelse(vars$Result<0.05, 1, 0)
 unique(vars[vars$Sign == 1, 'Variable'])
-write.csv(vars, "data//2_analysis//Trainers_dcs.csv")
+write.csv(vars, "0_data//3_results//trainers_dcs.csv")
+
+
 ```
+
+
+
