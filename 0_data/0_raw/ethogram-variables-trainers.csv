@@ -12,7 +12,10 @@ PR.Sup,info,info
 DOB,info,info
 DOA,info,info
 End.Date,info,info
+Duration,info,info
 Status,info,info
+Label,info,info
+Outcome,info,info
 Familiarisation.Start.Time..MM.SS.,familiarisation,time
 Familiarisation.Response..Oriented.to.Handler.,familiarisation,ordinal
 Familiarisation.Response..Exploration.,familiarisation,ordinal
@@ -134,3 +137,46 @@ Growls,behaviours ,unused
 Scratches,behaviours ,unused
 Grooms,behaviours ,unused
 Yawns,behaviours ,unused
+Lip Smacking,behaviours ,unused
+S-Walking-Pull_mean,walking,score
+S-Walking-Pull_prod,walking,score
+S-Distractions-Pull_mean,distractions,score
+S-Distractions-Pull_prod,distractions,score
+S-Walking-Distractions-Pull_mean,"walking, distraction",score
+S-Walking-Distractions-Pull_prod,"walking, distraction",score
+S-Call-Response_mean,familiarisation,score
+S-Call-Response_prod,familiarisation,score
+S-Familiarization-Dog-Call,"familiarisation, dog",score
+S-Obedience_mean,"standing, sitting, lying",score
+S-Obedience_prod,"standing, sitting, lying",score
+S-Sensitivity_mean,body,score
+S-Sensitivity_prod,body,score
+S-Tea Towel-First Response,towel,score
+S-Tea Towel-Second Response,towel,score
+S-Distractions-First Response_mean,distractions,score
+S-Distractions-First Response_prod,distractions,score
+S-Distractions-Second Response_mean,distractions,score
+S-Distractions-Second Response_prod,distractions,score
+S-Distractions-Difference_mean,distractions,score
+S-Distractions-Difference_prod,distractions,score
+S-Kong-Response_mean,kong,score
+S-Kong-Response_prod,kong,score
+S-Dog-Distraction_mean,dog,score
+S-Dog-Distraction_prod,dog,score
+S-Crate-Response_mean,crate,score
+S-Crate-Response_prod,crate,score
+S-Crate-Stimulus_mean,crate,score
+S-Crate-Stimulus_prod,crate,score
+S-Crate-Handler_mean,crate,score
+S-Crate-Handler_prod,crate,score
+S-Petting-Stimulus-During_mean,petting,score
+S-Petting-Stimulus-During_prod,petting,score
+S-Petting-Engagement-During_mean,petting,score
+S-Petting-Engagement-During_prod,petting,score
+S-Petting-After_mean,petting,score
+S-Petting-After_prod,petting,score
+S-Isolation-Handler_mean,isolation ,score
+S-Isolation-Handler_prod,isolation,score
+S-Isolation-Stimulus,isolation,score
+S-Sociability_mean,sociability,score
+S-Sociability_prod,sociability,score

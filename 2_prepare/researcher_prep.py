@@ -10,7 +10,7 @@ import numpy as np
 # Directory where to find Ethogram and Dogs csv processed files
 dir_pro = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\0_data\\1_process"
 # Directory where to save the files ready for analysis  
-dir_ana = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\0_data\\2_analysis"
+dir_ana = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\0_data\\2_prepare"
 date = '2021-05-03'
 # import ethogram scored by researcher 
 data = pd.read_csv('{}\\{}_Ethogram-Researchers.csv'.format(dir_pro, date))

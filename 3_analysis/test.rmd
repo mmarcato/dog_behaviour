@@ -1,0 +1,94 @@
+dc2 chisq test showed Breed as statistically significant results in dc1 and dc2
+
+```{r, echo = FALSE}
+# Adding a column to df vars for Test 
+vars = vars %>% mutate(Test = case_when(
+        Type == "ordinal" ~ "Logistic Regression",
+        Type == "categorical" ~ "Chisq"))
+print('Logistic Regression')
+table(vars$Test)
+unique(vars[vars$Test == 'Logistic Regression', 'Variable'])
+print('Chisq')
+unique(vars[vars$Test == 'Chisq', 'Variable'])
+
+```
+
+```{r, echo = FALSE}
+# creating category other
+levels(dc$Breed)[levels(dc$Breed) == "LRx"] <- "LRxGR"
+levels(dc$Breed)[levels(dc$Breed) =="GR" | 
+levels(dc$Breed) =="GS" | 
+levels(dc$Breed) =="GRxPoodle"] <- "Other"
+dc$Breed <- relevel(dc$Breed, "LR")
+
+```
+
+
+```{r, echo = FALSE}
+# CATEGORICAL WITH CHISQ
+dc1_cat_chi <- lapply(dc1_cat[-length(dc1_cat)], 
+                            function(x) chisq.test(table(x, dc1_cat$Outcome)))
+dc1_cat_chi_res <- lapply(dc1_cat_chi, function(x) c(x$statistic, x$parameter, x$p.value))
+dc1_cat_chi_res <- data.frame(do.call(rbind, dc1_cat_chi_res))
+colnames(dc1_cat_chi_res) <- c("X.squared", "df", "p_value")
+dc1_cat_chi_res %>% filter(p_value < 0.2) %>% select(X.squared, df, p_value)
+```
+
+```{r, echo = FALSE}
+# CATEGORICAL WITH CHISQ
+dc2_cat_chi <- lapply(dc2_cat[-length(dc2_cat)], 
+                            function(x) chisq.test(table(x, dc2_cat$Outcome)))
+dc2_cat_chi_res <- lapply(dc2_cat_chi, function(x) c(x$statistic, x$parameter, x$p.value))
+dc2_cat_chi_res <- data.frame(do.call(rbind, dc2_cat_chi_res))
+colnames(dc2_cat_chi_res) <- c("X.squared", "df", "p_value")
+dc2_cat_chi_res %>% filter(p_value < 0.2) %>% select(X.squared, df, p_value)
+```
+
+# Multivariable Logistic Regression
+
+
+```{r definition, echo = FALSE}
+
+print("Dimensions of original dataset:")
+print(dim(df))
+
+model_recipe <- recipe(Outcome ~ ., data = dc1_sign)
+summary(model_recipe)
+model_steps <- model_recipe  %>%
+                step_normalize(all_numeric()) %>%
+                step_dummy(all_nominal(), -Outcome)
+                # step_impute_mean(all_numeric()) %>%
+                step_impute_knn(all_numeric(), neighbors = 3)  %>%
+
+# prep(model_pca, training = df, retrain = TRUE) %>% 
+# juice(all_predictors()) %>% 
+# ncol()
+
+# Setting ROC as the metric for the Logistic Regression function
+lrFuncs$summary <- twoClassSummary
+set.seed(36)    
+
+ctrl <- rfeControl(functions = lrFuncs,     # logistic regression
+                    # method = "LOOCV",       # Leave One Out Cross Validation
+                    # number = 1, 
+                    method = "repeatedcv",  # Repeated Cross Validation
+                    number = 4,             # Number of folds 
+                    repeats = 10,           # Number of iterations/repetition
+                    verbose = FALSE,
+                    returnResamp = "all")
+
+# Recursive Feature Elimination with feat_lr
+model <- rfe(model_pca,                     # predict Outcome using all other variables
+                data = df,                  # selecting the features from univariate lr
+                sizes = 1:length(df), 
+                # number = 1,                
+                # Num_Resamples = 2,
+                rfeControl = ctrl,
+                # metric = "Accuracy")
+                metric = "ROC") 
+
+# Printing outputs
+warnings()
+print(model)
+print(summary(model$fit))
+```

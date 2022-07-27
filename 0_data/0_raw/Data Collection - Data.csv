@@ -1,21 +1,21 @@
-,,,Data Collection 1,,,,,,,,,,Data Collection 2,,,,,,,,,
-Intake,Name,Code,Date,Video,Actigraph,Bioharness,Polar,Positions,Researcher-Ethogram,Researcher-Name,Trainer-Ethogram,Trainer-Name,Date,Video,Actigraph,Bioharness,Polar,Positions,Researcher-Ethogram,Researcher-Name,Trainer-Ethogram,Trainer-Name
+,,,Data Collection 1,,,,,,,,,,Date Collection 2,,,,,,,,,
+Intake,Name,Code,Date,Video,Actigraph,Bioharness,Polar,Position,Researcher-Ethogram,Researcher-Name,Trainer-Ethogram,Trainer-Name,Date,Video,Actigraph,Bioharness,Polar,Position,Researcher-Ethogram,Researcher-Name,Trainer-Ethogram,Trainer-Name
 1,Diva,04-01-LD,20/05/2019,Done,Done,Done,Missing,Done,Done,Hazel,Done,Susan,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 1,Earl,04-02-LE,20/05/2019,Done,Done,Done,Done,Done,Done,"Con, Hazel",Done,"Allyce, Susan",03/07/2019,Done,Done,Done,Done,,Done,Hazel,Done,"Allyce, Susan"
 1,Douglas,04-03-LD,20/05/2019,Done,Done,Done,Done,Done,Done,Hazel,Done,Allyce,04/07/2019,Done,Done,Done,Done,,Done,Hazel,Done,Allyce
 1,Zodiac,04-04-LZ,20/05/2019,Done,Done,Done,Done,Done,Done,Hazel,Done,Susan,16/07/2019,Done,Done,Missing,Done,,Done,Hazel,Done,Susan
-1,Fargo,04-05-LF,23/05/2019,Done,Missing,Done,Done,Done,Done,Hazel,Done,Allyce,03/07/2019,Done,Done,Done,Done,,Done,Hazel,Done,Allyce
+1,Fargo,04-05-LF,23/05/2019,Done,Missing,Done,Done,"Done, but no IMU data",Done,Hazel,Done,Allyce,03/07/2019,Done,Done,Done,Done,,Done,Hazel,Done,Allyce
 1,Frida,04-06-LF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 1,Elf,04-07-LE,22/05/2019,Done,Done,Done,Done,Done,Done,"Con, Hazel",Done,Allyce,03/07/2019,Done,Done,Done,Done,,Done,Hazel,Done,Allyce
-1,Emmy,04-08-LE,18/06/2019,Done,Done,Done,Done,,Done,Con,Done,Susan,12/08/2019,Done,Done,Done,Done,Done,Done,Con,Done,Susan
+1,Emmy,04-08-LE,18/06/2019,Done,Done,Done,Done,,Done,Con,Done,Susan,12/08/2019,Done,Done,Missing,Done,Done,Done,Con,Done,Susan
 2,Dugg,05-01-LD,22/05/2019,Done,Done,Done,Done,Done,Done,"Con, Hazel",Done,Susan,17/07/2019,Done,Done,Missing,Done,Done,Done,Hazel,Done,Susan
-2,Flora,05-02-LF,23/05/2019,Done,Missing,Done,Done,Done,Done,Con,Done,Allyce,16/07/2019,Done,Done,Missing,Done,,Done,Hazel,Done,Allyce
-2,Fawn,05-03-LF,29/05/2019,Done,Done,Done,Done,,Done,"Con, Hazel",Done,Susan,17/07/2019,Done,Done,Missing,Done,Done,Done,Hazel,Done,Susan
+2,Flora,05-02-LF,23/05/2019,Done,Missing,Done,Done,"Done, but no IMU data",Done,Con,Done,Allyce,16/07/2019,Done,Done,Missing,Done,,Done,Hazel,Done,Allyce
+2,Fawn,05-03-LF,29/05/2019,Done,Done,Done,Done,Done,Done,"Con, Hazel",Done,Susan,17/07/2019,Done,Done,Missing,Done,Done,Done,Hazel,Done,Susan
 2,Zeb,05-04-LZ,22/05/2019,Done,Done,Done,Done,Done,Done,"Con, Hazel",Done,Allyce,17/07/2019,Done,Done,Missing,Done,,Done,Hazel,Done,Allyce
 2,Eldin,05-05-LE,29/05/2019,Done,Done,Done,Done,Done,Done,Con,Done,Susan,17/07/2019,Done,Done,Missing,Done,,Done,Hazel,Done,Susan
 3,Edrick,05-11-LE,13/06/2019,Done,Done,Done,Done,Done,Done,"Con, Hazel",Done,Susan,31/07/2019,Done,Done,Missing,Done,Done,Done,Hazel,Done,Susan
 3,Finesse,05-12-LF,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
-3,Esme,05-13-LE,13/06/2019,Done,Done,Done,Done,Done,Done,"Con, Hazel",Done,Susan,NA,NA,NA,NA,NA,NA,NA,NA,NA,Susan
+3,Esme,05-13-LE,13/06/2019,Done,Done,Done,Done,Done,Done,"Con, Hazel",Done,Susan,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 3,Ebbi,05-14-LE,13/06/2019,Done,Done,Done,Done,,Done,Con,Done,Allyce,31/07/2019,Done,Done,Missing,Done,Done,Done,Hazel,Done,Allyce
 3,Gaston,05-15-LG,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 4,Hugo,05-21-LH,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
@@ -28,33 +28,32 @@ Intake,Name,Code,Date,Video,Actigraph,Bioharness,Polar,Positions,Researcher-Etho
 6,Gav,07-12-LG,21/08/2019,Done,Missing,Done,Done,,Done,Con,Done,Allyce,14/10/2019,Done,Done,Done,Done,,Done,Con,Done,Allyce
 6,Effie,07-13-LE,21/08/2019,Done,Missing,Done,Done,,Done,Hazel,Done,Susan,10/10/2019,Done,Done,Done,Done,,Done,Hazel,Done,Susan
 6,Gretel,07-14-LG,21/08/2019,Done,Missing,Done,Done,,Done,Hazel,Done,Susan,10/10/2019,Done,Done,Done,Done,,Done,Hazel,Done,Susan
-6,Gilli,07-15-LG,21/08/2019,Done,Missing,Done,Done,,Done,Con,Done,Allyce,NA,NA,NA,NA,NA,NA,NA,NA,No 2nd Video?,Allyce
-7,Harry,08-01-LH,18/09/2019,Done,Done,Done,Done,Done,Done,Hazel,Done,Susan,30/10/2019,Done,Done,Done,Done,,Done,Hazel,Done,Susan
-7,Harvey,08-02-LH,18/09/2019,Done,Done,Done,Done,Done,Done,Hazel,Done,Allyce,30/10/2019,Done,Done,Done,Done,,Done,Hazel,Done,Allyce
-7,Hans,08-03-LH,18/09/2019,Done,Done,Done,Done,Short Video?,USB,Con,Done,Susan,30/10/2019,Missing,Done,Done,Done,,NA,NA,NA,Susan
-7,Harmony,08-04-LH,18/09/2019,Done,Done,Done,Done,Done,Done,Hazel,Done,Susan,30/10/2019,Done,Done,Done,Done,,Done,Hazel,Done,Susan
-8,Jira,08-11-LJ,23/09/2019,Done,Missing,Done,Done,,Done,Con,Done,Susan,06/11/2019,Done,Done,Done,Done,,Done,Con,Done,Susan
-8,Hayley,08-12-LH,23/09/2019,Done,Missing,Done,Done,,Done,Con,Done,Susan,06/11/2019,Done,Done,Done,Done,,Done,Con,Done,Susan
-8,Jojo,08-13-LJ,23/09/2019,Done,Missing,Done,Done,,Done,Con,Done,Allyce,14/11/2019,Done,Missing,Done,Done,,Done,Con,Done,Allyce
+6,Gilli,07-15-LG,21/08/2019,Done,Missing,Done,Done,,Done,Con,Done,Allyce,NA,NA,NA,NA,NA,NA,NA,NA,No 2nd Video?,
+7,Harry,08-01-LH,18/09/2019,Done,Done,Format,Done,Done,Done,Hazel,Done,Susan,30/10/2019,Done,Done,Done,Done,,Done,Hazel,Done,Susan
+7,Harvey,08-02-LH,18/09/2019,Done,Done,Format,Done,Done,Done,Hazel,Done,Allyce,30/10/2019,Done,Done,Done,Done,,Done,Hazel,Done,Allyce
+7,Hans,08-03-LH,23/09/2019,Done,Done,Failure,Done,Short Video?,USB,Con,Done,Susan,NA,Missing,Done,Done,Done,,NA,NA,NA,
+7,Harmony,08-04-LH,18/09/2019,Done,Done,Format,Done,Done,Done,Hazel,Done,Susan,30/10/2019,Done,Done,Done,Done,,Done,Hazel,Done,Susan
+8,Jira,08-11-LJ,23/09/2019,Done,Missing,Failure,Done,,Done,Con,Done,Susan,06/11/2019,Done,Done,Done,Done,,Done,Con,Done,Susan
+8,Hayley,08-12-LH,23/09/2019,Done,Missing,Format,Done,,Done,Con,Done,Susan,06/11/2019,Done,Done,Done,Done,,Done,Con,Done,Susan
+8,Jojo,08-13-LJ,23/09/2019,Done,Missing,Failure,Done,,Done,Con,Done,Allyce,14/11/2019,Done,Missing,Done,Done,,Done,Con,Done,Allyce
 9,Irrie,09-01-LI,02/10/2019,Done,Done,Failure,Done,,Done,Hazel,Done,Allyce,20/11/2019,Done,Done,Done,Done,Done,Done,Hazel,Done,Allyce
-9,Judson,09-02-LJ,02/10/2019,Done,Done,Failure,Done,,Done,Hazel,Done,Allyce,20/11/2019,Done,Done,Done,Done,Done,Done,Hazel,"
-",
+9,Judson,09-02-LJ,02/10/2019,Done,Done,Failure,Done,,Done,Hazel,Done,Allyce,20/11/2019,Done,Done,Done,Done,Done,Done,Hazel,????,
 9,Josie,09-03-LJ,02/10/2019,Done,Done,Failure,Done,,Done,Hazel,Done,Allyce,20/11/2019,Done,Done,Done,Done,Done,Done,Hazel,Done,Allyce
 9,Jazzi,09-04-LJ,02/10/2019,Done,Done,Failure,Done,,Done,Hazel,Done,Allyce,20/11/2019,Done,Done,Done,Done,Done,Done,Hazel,Done,Allyce
-10,Fergus,10-01-LF,24/10/2019,Done,Done,Done,Done,,Done,Con,Done,Susan,,NA,NA,NA,NA,NA,NA,NA,NA,Susan
-10,Hollie,10-02-LH,24/10/2019,Done,Done,Done,Done,,Done,Con,Done,Allyce,,NA,NA,NA,NA,NA,NA,NA,No 2nd Video?,Allyce
+10,Fergus,10-01-LF,24/10/2019,Done,Done,Done,Done,,Done,Con,Done,Susan,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
+10,Hollie,10-02-LH,24/10/2019,Done,Done,Done,Done,,Done,Con,Done,Allyce,NA,NA,NA,NA,NA,NA,NA,NA,No 2nd Video?,
 10,July,10-03-LJ,30/10/2019,Done,Done,Done,Done,,Done,Hazel,Done,Susan,08/01/2020,Done,Done,Done,Done,Done,Done,Hazel,Done,Susan
 10,Jane,10-04-LJ,24/10/2019,Done,Done,Done,Done,,Done,Con,Done,Allyce,08/01/2020,Done,Done,Done,Done,Done,Done,Hazel,Done,Allyce
-11,Junior,10-11-LJ,06/11/2019,Done,Done,Done,Done,Done,Done,Con,Done,Susan,09/01/2020,Done,Done,Done,Done,,Done,Hazel,Done,Susan
-11,Joy,10-12-LJ,01/11/2019,Done,Done,Done,Missing,Done,Done,Con,Done,Susan,18/12/2019,Done,Done,Done,Done,,Done,Con,Done,Susan
+11,Junior,10-11-LJ,06/11/2019,Done,Done,Done,Done,Done,Done,Con,"Done, Done","Susan, Allyce",09/01/2020,Done,Done,Done,Done,,Done,Hazel,"Done, Done","Susan, Allyce"
+11,Joy,10-12-LJ,01/11/2019,Done,Done,Done,Missing,Done,Done,Con,"Done, Done","Susan, Allyce",18/12/2019,Done,Done,Done,Done,,Done,Con,"Done, Done","Susan, Allyce"
 11,Kelvin,10-13-LK,01/11/2019,Done,Done,Done,Done,Done,Done,Con,Done,Susan,09/01/2020,Done,Done,Done,Done,,Done,Con,Done,Susan
 11,Kirby,10-15-LK,01/11/2019,Done,Done,Done,Done,,Done,Con,Done,Allyce,08/01/2020,Done,Done,Done,Done,Done,Done,Con,Done,Allyce
 12,Idris,10-14-LI,06/11/2019,Done,Done,Done,Done,Done,Done,Hazel,Done,Susan,09/01/2020,Done,Done,Done,Done,,Done,Hazel,Done,Susan
 13,Kacie,10-31-LK,14/11/2019,Done,Missing,Done,Done,,Done,Hazel,Done,Allyce,09/01/2020,Done,Done,Done,Done,,Done,Hazel,Done,Allyce
-14,Mac,11-01-LM,18/12/2019,Done,Done,Done,Done,,Done,Con,Done,Susan,,NA,NA,NA,NA,NA,NA,NA,NA,
+14,Mac,11-01-LM,18/12/2019,Done,Done,Done,Done,,Done,Con,Done,Susan,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 14,Meeko,11-02-IM,18/12/2019,Done,Done,Done,Done,Done,USB,Con,Done,Allyce,16/01/2020,Done,Done,Done,Done,,Done,Con,Done,Allyce
 15,Kain,11-11-IK,18/12/2019,Done,Done,Done,Done,Done,Done,Con,Done,Allyce,16/01/2020,Done,Done,Done,Done,,Done,Con,Done,Allyce
-15,Mara,11-12-IM,18/12/2019,Done,Done,Done,Done,,Done,Con,Done,Allyce, ,NA,NA,NA,NA,NA,NA,NA,,
+15,Mara,11-12-IM,18/12/2019,Done,Done,Done,Done,,Done,Con,Done,Allyce,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA
 16,Katie,11-21-IK,12/12/2019,Done,Done,Done,Done,Done,Done,Hazel,Done,Susan,28/01/2020,Done,Done,Done,Done,,Done,Hazel,Done,Susan
 16,Meg,11-22-IM,12/12/2019,Done,Done,Done,Done,Done,Done,Con,Done,Susan,30/01/2020,Done,Done,Done,Done,,Done,Con,Done,Susan
 16,Tosh,11-23-IT,12/12/2019,Done,Done,Done,Done,Done,Done,Hazel,Done,Susan,28/01/2020,Done,Done,Done,Done,,Done,Hazel,Done,Susan
@@ -63,9 +62,9 @@ Intake,Name,Code,Date,Video,Actigraph,Bioharness,Polar,Positions,Researcher-Etho
 16,Lexie,11-26-IL,12/12/2019,Done,Done,Done,Done,Done,Done,Con,Done,Susan,30/01/2020,Done,Done,Done,Done,,Done,Con,Done,Susan
 16,Illana,11-27-II,18/12/2019,Done,Done,Done,Done,Done,Done,Con,Done,Susan,30/01/2020,Done,Done,Done,Missing,,USB,Con,Done,Susan
 16,Zander,11-28-IZ,13/12/2019,Done,Done,Done,Done,Done,USB,Con,Done,Allyce,28/01/2020,Done,Done,Done,Done,,Done,Con,Done,Allyce
-17,Kali,12-01-LK,09/01/2020,Done,Done,Done,Done,,Done,Con,Done,Allyce,19/02/2020,,,,,,,,Done,Allyce
-17,Minnie,12-02-LM,09/01/2020,Done,Done,Done,Done,,Done,Con,Done,Allyce,19/02/2020,,,,,,,,Done,Allyce
-17,Milo,12-03-LM,09/01/2020,Done,Done,Done,Done,,Done,Con,Done,Allyce,19/02/2020,,,,,,,,Done,Allyce
+17,Kali,12-01-LK,09/01/2020,Done,Done,Done,Done,,Done,Con,Done,Allyce,19/02/2020,Done,Done,,,,,,Done,Allyce
+17,Minnie,12-02-LM,09/01/2020,Done,Done,Done,Done,,Done,Con,"Done, Done","Allyce, Susan",19/02/2020,Done,,,,,,,"Done, Done","Allyce, Susan"
+17,Milo,12-03-LM,09/01/2020,Done,Done,Done,Done,,Done,Con,"Done, Done","Allyce, Susan",19/02/2020,Done,,,,,,,Done,"Allyce, Susan"
 18,Molly,01-01-LM,29/01/2020,Done,Done,Done,Done,,,,Done,Susan,,,,,,,,,,
 18,Mandy,01-02-LM,29/01/2020,Done,Done,Done,Done,,,,Done,Allyce,,,,,,,,,,
 18,Nina,01-03-LN,30/01/2020,Done,Done,Done,Missing,,,,Done,Susan,,,,,,,,,,
@@ -78,7 +77,7 @@ Intake,Name,Code,Date,Video,Actigraph,Bioharness,Polar,Positions,Researcher-Etho
 19,Oj,01-13-LO,11/02/2020,Done,Done,Done,Done,,,,Done,Allyce,,,,,,,,,,
 19,Ozark,01-14-LO,19/02/2020,,,,,,,,Done,Susan,,,,,,,,,,
 19,Orbet,01-15-LO,11/02/2020,Done,Done,Done,Done,,,,Done,Allyce,,,,,,,,,,
-20,Noelle,02-01-LN,,,,,,,57,,72,,,,,,,,48,,51,
+20,Noelle,02-01-LN,,,,,,,57,,68,,,,,,,,48,,48,
 20,Ocean,02-02-LO,,,,,,,,,,,,,,,,,,,,
 21,Niff,02-03-LN,,,,,,,,,,,,,,,,,,,,
 21,Pennie,02-04-LP,,,,,,,,,,,,,,,,,,,,
@@ -96,35 +95,35 @@ Intake,Name,Code,Date,Video,Actigraph,Bioharness,Polar,Positions,Researcher-Etho
 25,Tango,09-23-LT,05/10/2020,Done,Done,Done,Done,,,,Done,Susan,,,,,,,,,,
 25,Quayla,09-24-LQ,05/10/2020,Done,Done,Done,Done,,,,Done,Susan,,,,,,,,,,
 25,Varley,09-25-LV,05/10/2020,Done,Done,Done,Done,,,,Done,Susan,,,,,,,,,,
-26,Simon,09-31-LS,12/10/2020,Done,Back Missing,Done,Done,,,,TBD,Susan,,,,,,,,,,
-26,Teal,09-32-LT,12/10/2020,Done,Back Missing,Done,Done,,,,TBD,Susan,,,,,,,,,,
-26,Zaar,09-33-LZ,12/10/2020,Done,Back Missing,Done,Done,,,,TBD,Susan,,,,,,,,,,
-26,Zackie,09-34-LZ,12/10/2020,Done,Back Missing,Done,Done,,,,TBD,Susan,,,,,,,,,,
-26,Vale,09-35-LV,12/10/2020,Done,Back Missing,Done,Done,,,,TBD,Susan,,,,,,,,,,
+26,Simon,09-31-LS,12/10/2020,Done,Back Missing,Done,Done,,,,Done,Susan,,,,,,,,,,
+26,Teal,09-32-LT,12/10/2020,Done,Back Missing,Done,Done,,,,Done,Susan,,,,,,,,,,
+26,Zaar,09-33-LZ,12/10/2020,Done,Back Missing,Done,Done,,,,Done,Susan,,,,,,,,,,
+26,Zackie,09-34-LZ,12/10/2020,Done,Back Missing,Done,Done,,,,Done,Susan,,,,,,,,,,
+26,Vale,09-35-LV,12/10/2020,Done,Back Missing,Done,Done,,,,Done,Susan,,,,,,,,,,
 27,Ramona,09-41-LR,,,,,,,,,,,,,,,,,,,,
-27,Rita,09-42-LR,,,,,,,,,,,08/12/2020,Done,Done,Done,Done,,,,TBD,Susan
+27,Rita,09-42-LR,,,,,,,,,,,08/12/2020,Done,Done,Done,Done,,,,Done,Susan
 27,Zorro,09-43-LZ,,,,,,,,,,,,,,,,,,,,
-27,Toto,09-44-LT,,,,,,,,,,,08/12/2020,Done,Done,Done,Done,,,,TBD,Susan
+27,Toto,09-44-LT,,,,,,,,,,,08/12/2020,Done,Done,Done,Done,,,,Done,Susan
 27,Zylan,09-45-LZ,,,,,,,,,,,,,,,,,,,,
-28,Zita,10-41-LZ,30/10/2020,Done,Done,Done,Done,,,,TBD,Susan,17/12/2020,Done ,Done ,Done ,Done ,,,,TBD,Susan
-28,Tim,10-42-LT,30/10/2020,Done,Done,Done,Done,,,,TBD,Susan,17/12/2020,Done ,Done ,Done ,Done ,,,,TBD,Susan
-28,Rebecca,10-43-LR,30/10/2020,Done,Done,Done,Done,,,,TBD,Susan,17/12/2020,Done ,Done ,Done ,Done ,,,,TBD,Susan
-28,Leigh,10-44-LL,,Missing,Missing,Missing,Missing,,,,,,,Missing,Missing,Missing,Missing,,,,,
-28,Eddie,10-45-LE,30/10/2020,Done,Done,Done,Done,,,,TBD,Susan,17/12/2020,Done ,Done ,Done ,Done ,,,,TBD,Susan
+28,Zita,10-41-LZ,30/10/2020,Done,Done,Done,Done,,,,Done,Susan,17/12/2020,Done ,Done ,Done ,Done ,,,,Done,Susan
+28,Tim,10-42-LT,30/10/2020,Done,Done,Done,Done,,,,Done,Susan,17/12/2020,Done ,Done ,Done ,Done ,,,,Done,Susan
+28,Rebecca,10-43-LR,30/10/2020,Done,Done,Done,Done,,,,Done,Susan,17/12/2020,Done ,Done ,Done ,Done ,,,,Done,Susan
+28,Leigh,10-44-LL,,,,,,,,,,,,,,,,,,,,
+28,Eddie,10-45-LE,30/10/2020,Done,Done,Done,Done,,,,Done,Susan,17/12/2020,Done ,Done ,Done ,Done ,,,,Done,Susan
 29,Zeplin,11-40-LZ,,,,,,,,,,,,,,,,,,,,
 29,Ziggy,11-41-LZ,,,,,,,,,,,,,,,,,,,,
 29,Ezra,11-42-LE,,,,,,,,,,,,,,,,,,,,
 29,Bubbles,11-43-LB,,,,,,,,,,,,,,,,,,,,
-30,Zeeno,11-44-LZ,08/12/2020,Done,Done,Done,Done,,,,TBD,Susan,,,,,,,,,,
-30,Thor,11-42-LT,08/12/2020,Done,Done,Done,Done,,,,TBD,Susan,,,,,,,,,,
-30,Tessa,11-43-LT,08/12/2020,Done,Done,Done,Done,,,,TBD,Susan,,,,,,,,,,
-30,Yeska,11-44-LY,08/12/2020,Done,Done,Done,Done,,,,TBD,Susan,,,,,,,,,,
-30,Zarley,11-45-LZ,08/12/2020,Done,Done,Done,Done,,,,TBD,Susan,,,,,,,,,,
-31,Rainbow,11-51-LR,14/12/2020,Done,Done,Done,Done,,,,TBD,Susan,,,,,,,,,,
-31,Clay,11-52-LC,14/12/2020,Done,Done,Done,Done,,,,TBD,Susan,,,,,,,,,,
-31,Dora,11-53-LD,14/12/2020,Done,Done,Done,Done,,,,TBD,Susan,,,,,,,,,,
-31,Piper,11-54-LP,14/12/2020,Done,Done,Done,Done,,,,TBD,Susan,,,,,,,,,,
-32,John,11-61-LJ,,,,,,,,,18,,,,,,,,,,6,
+30,Zeeno,11-44-LZ,08/12/2020,Done,Done,Done,Done,,,,Done,Susan,,,,,,,,,,
+30,Thor,11-42-LT,08/12/2020,Done,Done,Done,Done,,,,Done,Susan,,,,,,,,,,
+30,Tessa,11-43-LT,08/12/2020,Done,Done,Done,Done,,,,Done,Susan,,,,,,,,,,
+30,Yeska,11-44-LY,08/12/2020,Done,Done,Done,Done,,,,Done,Susan,,,,,,,,,,
+30,Zarley,11-45-LZ,08/12/2020,Done,Done,Done,Done,,,,Done,Susan,,,,,,,,,,
+31,Rainbow,11-51-LR,14/12/2020,Done,Done,Done,Done,,,,Done,Allyce,,,,,,,,,,
+31,Clay,11-52-LC,14/12/2020,Done,Done,Done,Done,,,,Done,Allyce,,,,,,,,,,
+31,Dora,11-53-LD,14/12/2020,Done,Done,Done,Done,,,,Done,Allyce,,,,,,,,,,
+31,Piper,11-54-LP,14/12/2020,Done,Done,Done,Done,,,,Done,Allyce,,,,,,,,,,
+32,John,11-61-LJ,,,,,,,,,,,,,,,,,,,,
 32,Saffron,11-62-LS,,,,,,,,,,,,,,,,,,,,
 32,Chhiri,11-63-LC,,,,,,,,,,,,,,,,,,,,
 32,Toni,11-64-LT,,,,,,,,,,,,,,,,,,,,
@@ -133,10 +132,24 @@ Intake,Name,Code,Date,Video,Actigraph,Bioharness,Polar,Positions,Researcher-Etho
 33,Teemo,01-23-LT,,,,,,,,,,,,,,,,,,,,
 33,Trinny,01-24-LT,,,,,,,,,,,,,,,,,,,,
 33,Woulfie,01-25-LW,,,,,,,,,,,,,,,,,,,,
-34,Vaughan,04-11-LV,29/04/2021,Done,Done,Done,Done,,,,,,,,,,,,,,,
-34,Yani,04-12-LY,29/04/2021,Done,Done,Done,Done,,,,,,,,,,,,,,,
-34,Yorkie,04-13-LY,29/04/2021,Done,Done,Done,Done,,,,,,,,,,,,,,,
-34,Verona,04-14-LV,29/04/2021,Done,Done,Done,Done,,,,,,,,,,,,,,,
-34,Vista,04-15-LV,29/04/2021,Done,Done,Done,Done,,,,,,,,,,,,,,,
-34,Harold,04-16-LH,29/04/2021,Done,Done,Done,Done,,,,,,,,,,,,,,,
-,,,,,,,,33,,,,,,,,,,13,,,,
+34,Vaughan,04-11-LV,29/04/2021,Done,Done,Done,Done,,,,Done,Allyce,21/06/2021,Done,Done,Done,Done,,,,Done,Allyce
+34,Yani,04-12-LY,29/04/2021,Done,Done,Done,Done,,,,Done,Allyce,21/06/2021,Done,Done,Done,Done,,,,Done,Allyce
+34,Yorkie,04-13-LY,29/04/2021,Done,Done,Done,Done,,,,Done,Allyce,21/06/2021,Done,Done,Done,Done,,,,Done,Allyce
+34,Verona,04-14-LV,29/04/2021,Done,Done,Done,Done,,,,Done,Allyce,21/06/2021,Done,Done,Done,Done,,,,Done,Allyce
+34,Vista,04-15-LV,29/04/2021,Done,Done,Done,Done,,,,Done,Allyce,,,,,,,,,,
+34,Harold,04-16-LH,29/04/2021,Done,Done,Done,Done,,,,Done,Allyce,,,,,,,,,,
+,,,,,,,,32,,,0,,,,,,,13,,,0,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,"Stats today
+27/10/2021",,,,DC1,,DC2,,Total,,,,,,,
+,,,,,,,,,,,TBD,Done,TBD,Done,TBD,Done,Total,,,,,
+,,,,,,,Susan,,,,0,50,0,25,0,75,75,,,,,
+,,,,,,,Allyce,,,,0,36,8,25,8,61,69,,,,,
+,,,,,,,,,,,,,,,,,144,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,Done,TBD,,,TBD,,,,,,,,,,,
+,,,,Inter-rater,Different raters,,4,,,,8,"Allyce to do 4 (Joy-DC1 & DC2, Junior-DC1 & DC2), Susan to do 4 (Milo-DC1 & DC2, Minnie-DC1 & DC2)",,,,,,,,,,
+,,,,Intra-rater,"Same rater, two points in time",,7,,,,5,"Allyce to do 2 (Milo-DC2, Minnie-DC2), Susan to do 3 (Joy-DC1, Junior-DC1, Zodiac-DC2)",,,,,,,,,,

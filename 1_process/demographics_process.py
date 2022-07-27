@@ -58,7 +58,6 @@ data['Outcome'] = np.select( [
 print(data.groupby('Outcome').size())
 # 27% failure rate (27 fails/104 total with outcome)
 
-## This graph was published as preliminary resutls in 
 # Number of months dogs trainer before being withdrawn
 data.loc[data['Outcome'] == 'Fail', 'Duration'].describe()
 data.loc[data['Outcome'] == 'Fail', ['Duration', 'Name', 'DOA', 'End Date']].sort_values(by = 'Duration')
