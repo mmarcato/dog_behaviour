@@ -43,8 +43,55 @@ dc2_cat_chi_res <- data.frame(do.call(rbind, dc2_cat_chi_res))
 colnames(dc2_cat_chi_res) <- c("X.squared", "df", "p_value")
 dc2_cat_chi_res %>% filter(p_value < 0.2) %>% select(X.squared, df, p_value)
 ```
+# Multivariate Logistic Regression using Caret
 
-# Multivariable Logistic Regression
+# Caret RFE + preprocessing
+RFE model in R. Apparently RFE allows you to specify pre-processing (link)[https://stackoverflow.com/questions/44776763/recursive-feature-elimination-with-caret-metric-roc-is-not-created-by-the-sum]. 
+I could use the trControl = (trainControl)[https://www.rdocumentation.org/packages/caret/versions/6.0-92/topics/trainControl] and specify preProcOptions (link)[https://www.rdocumentation.org/packages/caret/versions/6.0-92/topics/preProcess]
+
+```{r, echo = FALSE}
+# Setting ROC as the metric for the Logistic Regression function
+lrFuncs$summary <- twoClassSummary
+set.seed(36)
+
+ctrl <- rfeControl(functions = lrFuncs,     # logistic regression
+                    method = "LOOCV",       # Leave One Out Cross Validation
+                    # number = 1, 
+                #     method = "repeatedcv",  # Repeated Cross Validation
+                #     number = 4,             # Number of folds 
+                #     repeats = 10,           # Number of iterations/repetition
+                    verbose = FALSE,
+                    returnResamp = "all")
+
+# train control for preprocessing dataset
+trainctrl <- trainControl(classProbs = TRUE, # compute the class probability (true enables ROC)
+		        # preProcOptions = list(method = c('center', 'scale', 'knnImpute', 'pca'), k = 3, thresh = 0.95),
+		        preProcOptions = list(k = 3, thresh = 0.95),
+			summaryFunction = twoClassSummary # calculate ROC metric
+)
+
+# Recursive Feature Elimination with feat_lr
+model <- rfe(Outcome ~ . ,                     # predict Outcome using all other variables
+                data = dc_sign,                  # selecting the features from univariate lr
+                sizes = 1:length(dc_sign), 
+                # number = 1,                
+                # Num_Resamples = 2,
+                rfeControl = ctrl,
+                # metric = "Accuracy")
+                metric = "ROC",
+                trControl = trainctrl,
+                preProc = c('knnImpute', 'hello')) 
+
+warnings()
+print(model)
+print(summary(model$fit))
+predictors(model)
+
+dim(dc_sign)
+```
+
+
+# Multivariable Logistic Regression using Recipes
 
 
 ```{r definition, echo = FALSE}
