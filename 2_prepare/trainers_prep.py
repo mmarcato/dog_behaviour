@@ -11,7 +11,7 @@ import numpy as np
 dir_pro = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\0_data\\1_process"
 # Directory where to save the Processed file
 dir_ana = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\0_data\\2_prepare"
-date = '2022-07-22'
+date = '2022-11-16'
 # import ethogram scored by researcher 
 data = pd.read_csv('{}\\{}_Ethogram-Trainers.csv'.format(dir_pro, date))
 

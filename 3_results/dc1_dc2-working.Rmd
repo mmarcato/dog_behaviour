@@ -1,0 +1,734 @@
+---
+title: "Ethogram Data Collection 1 - Outcome (Success, Fail)"
+author: "Marinara Marcato"
+output: 
+  html_document:
+    toc: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = "C:/Users/marinara.marcato/Project/Scripts/dog_ethogram")
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+# install.packages("lmtest")
+library(DescTools)
+# plot
+library(ggplot2)
+library(ggpubr)
+library(ggmosaic)
+library(cowplot)
+# datasets
+library(plyr)
+library(dplyr)
+# library(conflicted) # prevent conflicts between packages
+library(tidyverse)
+library(reshape2) # remove?
+
+library(ggsci)  # colors for the graphs - png colours for nature
+library(broom)  # convert r output into tibbles
+library(xtable) # latex table output
+# machine learning/stats
+library(recipes)
+library(caret)
+library(rstatix)
+library(mlbench) # remove?
+library(PRROC)  # calculates precision recall curve
+library(lmtest) # lrtest (log likelihood ratio test, nested models)
+```
+
+```{r output, include = FALSE, results = "hide", message = FALSE}
+# save dataframes to csv and print LaTeX table
+tab_results <- function(df, name, caption=NULL) {
+
+    # remove the dots from the rownames
+    rownames(df) <- gsub("[.]", " ", rownames(df))
+    
+    path = paste("3_results/dc1-dc2-working/", name, ".csv", sep = "")
+
+    # save csv file
+    write.csv(df, path)
+    cat("dataframe saved to ", path)
+    
+    # latex code for table
+#     print(xtable(df,
+#         caption = paste(caption, ".", sep = ""),
+#         label = paste("T-dc1-", name, sep = "")),
+#         caption.placement = "top")
+}
+
+# save images as png and print LaTeX table
+fig_results <- function(plot, name, caption = NULL, label = NULL){
+
+    path = paste("3_results/dc1-dc2-working/", name, ".png", sep = "")
+    
+    # if label is not given, use name
+    if (is.null(label)){
+        label = name
+    }
+    # save png
+    suppressMessages(ggsave(filename = path, 
+                plot = plot + theme(text = element_text(size = 20)),
+                width = 12, height = 8))
+    cat("Image saved at", path)
+
+    # latex code for image
+#     cat("\n\nStart LaTeX code\n\n",
+#             paste("\\begin{figure}[!h]\n\\centering\n\\caption{", paste(caption, ".", sep = ""),"}","\n\\label{F-dc1-", label, "}\n\\includegraphics[width = 11cm]{",path,"}\n\\end{figure}", sep = ""), 
+#             "\n\nEnd LaTeX Code\n\n")
+}
+```
+
+# Introduction 
+This document shows the data analysis carried out to investigate the association between ethogram scores filled out by two trainers and the dog's training outcome.
+Statistical methods will be used to test the hypothesis that there is a relationship between ethogram scores at DC1 and training outcome (Success, Fail). 
+
+# Data Exploration
+The dataset comprised of the following types and number of variables. The original ethogram items contained ordinal and categorical variables. 
+The score variables were numerical derived from the original ethogram items.
+
+```{r, echo = FALSE}
+vars <- read.csv('0_data/0_raw/ethogram-variables-trainers.csv', stringsAsFactors=FALSE)
+print(table(vars$Type))
+ord <- vars %>% filter(Type == "ordinal") %>% pull("Variable")
+cat <- vars %>% filter(Type == "categorical") %>% pull("Variable")
+
+dc1 <- read.csv('0_data/2_prepare/2022-11-16_Ethogram-Trainers-DC1.csv', 
+          stringsAsFactors=TRUE,        # imports character columns as factors
+          na.strings=c("")              # imports "" as NA
+        )
+
+dc2 <- read.csv('0_data/2_prepare/2022-11-16_Ethogram-Trainers-DC2.csv', 
+          stringsAsFactors=TRUE,        # imports character columns as factors
+          na.strings=c("")              # imports "" as NA
+        )
+
+# changing data types          
+dc1$Data.Collection.Date <- as.Date(dc1$Data.Collection.Date, format= "%Y-%m-%d")
+dc1$DOB = as.Date(dc1$DOB, format= "%Y-%m-%d")
+dc1$DOA = as.Date(dc1$DOA, format= "%Y-%m-%d")
+dc1$End.Date = as.Date(dc1$End.Date, format= "%Y-%m-%d")
+dc1$Duration = as.numeric(gsub(" .*$", "", dc1$Duration))
+
+dc1 <- dc1 %>% filter(Working != "Medical")
+dc1$Outcome <- droplevels(dc1$Outcome)
+dc1$Working <- droplevels(dc1$Working)
+dc1$Working <- relevel(dc1$Working, "Success")
+dc1$Outcome <- relevel(dc1$Outcome, "Success")
+
+dc1$Outcome <- dc1$Working
+```
+All ordinal (N = 53) and categorical (N = 17) variables from the original ethogram items, 
+score (N = 42) variables derived from the original ethogram items and 
+demographical variables (N = 2) - namely, Sex and Breed - will be analysed.
+
+## Demographics
+Overview of the dogs participating in the data collection. 
+Inclusion criteria: only Labrador Retrievers (LR) and Labrador Retrievers crossed with Golden Retrievers (LRxGR) were kept for data analysis.
+
+```{r, echo = FALSE}
+# removing dogs based on breed in the dc1 dataset
+cat('Original dataset (dogs, variables): ', dim(dc1))
+print(table(dc1$Breed))
+levels(dc1$Breed)[levels(dc1$Breed) == "LRx"] <- "LRxGR"
+
+# Changing Breeds
+levels(dc1$Breed)[levels(dc1$Breed) == "GR"] <- "Other"
+levels(dc1$Breed)[levels(dc1$Breed) == "GRxPoodle"] <- "Other"
+# dc1 <- dc1 %>% filter(Breed == "LRxGR" | Breed == "LR")
+
+dc1$Breed <- droplevels(dc1$Breed)
+print(table(dc1$Breed))
+cat('Final dataset (dogs, variables): ', dim(dc1))
+print(table(dc1$Outcome))
+print(prop.table(table(dc1$Outcome)))
+
+# Sex
+print(table(dc1$Sex))
+```
+
+Calculate descriptive statistics for age at arrival at the training centre for formal training. 
+Calculate descriptive statistics for age at assessment when the dogs performed the behaviour test at data collection 1, which should be around week 3 of formal training.
+```{r, echo = FALSE}
+# n <- dim(dc1)[1]
+
+dc1$Age.at.Arrival <- dc1$DOA - dc1$DOB
+cat('Age at Arrival: Mean', round(mean(dc1$Age.at.Arrival)/30.417, 2), 
+            'Standard Deviation', round(sd(dc1$Age.at.Arrival)/30.417, 2), 
+            'Minimum:', round(min(dc1$Age.at.Arrival)/30.417, 2),
+            'Maximum:', round(max(dc1$Age.at.Arrival)/30.417, 2))         
+# mean <- mean(dc1$Age.at.Arrival)
+# margin <- qt(0.975,df=n-1)*sd(std)/sqrt(n)
+# 'Confidence Interval', round((mean-margin)/30.417, 2), round((mean+margin)/30.417, 2)
+
+dc1$Age.at.Assessment <- dc1$Data.Collection.Date - dc1$DOB
+cat('Age at Assessment: Mean', round(mean(dc1$Age.at.Assessment)/30.417, 2), 
+            'Standard Deviation', round(sd(dc1$Age.at.Assessment)/30.417, 2), 
+            'Minimum:', round(min(dc1$Age.at.Assessment)/30.417, 2),
+            'Maximum:', round(max(dc1$Age.at.Assessment)/30.417, 2))
+# mean <- mean(dc1$Age.at.Assessment)
+# margin <- qt(0.975,df=n-1)*sd(std)/sqrt(n)
+# 'Confidence Interval', round((mean-margin)/30.417, 2), round((mean+margin)/30.417, 2)
+
+```
+
+Calculate statistics of duration of training for the dogs that were withdrawn from training. 
+Performing this behaviour test at the beginning on the training (Week 3) would allow assistance dog training organisations to understand which dog are more suitable and allow them to make informed decisions when analysing which dogs to keep for training considering the results of this objective assessment. 
+```{r, echo = FALSE}
+# Duration of training before withdrawal in weeks
+duration <- dc1 %>% filter(Outcome == "Fail") %>% select(Duration)/7
+print('Duration of Training in weeks')
+summary(duration)
+
+h <- ggplot(duration, aes(x=Duration)) +
+ geom_histogram(binwidth = 1) +
+ xlab("Duration (Weeks)") +
+ ylab("Number of Dogs") + theme_bw()
+h
+
+fig_results(h, name = "duration-histogram",
+            caption = "Duration of training in weeks for dogs that were withdrawn from training for behavioural reasons.")
+# duration <- dc1 %>% filter(Outcome == "Fail") %>% pull(Duration)/7
+# print('Duration of Training in weeks')
+# summary(duration)
+
+# print("Histogram of Duration of Training")
+# h <- hist(duration, breaks = max(dc1$Duration)/7 , plot = FALSE)
+# plot(h, ylab = "Number of Dogs Withdrawn", xlab = "Duration (Weeks)", main = NULL)
+```
+
+## Descriptive Statistics
+
+Calculate descriptive statistics for numerical and categorical variables.
+```{r, echo = FALSE}
+# NUMERICAL
+stats <- data.frame(do.call(rbind, lapply(dc1 %>% select(where(is.numeric)), summary)))
+# missing values, there is something weird about the NAs calculations using summary
+stats$NA.s <- colSums(is.na(dc1 %>% select(where(is.numeric))))
+# print('Features sorted by number of missing rows')
+print(stats[order(stats$NA.s, decreasing = TRUE), 'NA.s', drop = FALSE])
+stats
+# save csv and print latex code
+tab_results(stats, name = "descriptive-statistics-numerical")
+
+# CATEGORICAL
+stats <- data.frame(do.call(rbind, lapply(dc1 %>% select(all_of(cat), -Kong.Interaction.Lateralisation), summary)))
+stats$NA.s <- colSums(is.na(dc1 %>% select(all_of(cat), -Kong.Interaction.Lateralisation)))
+# missing values, there is something weird about the NAs calculations using summary
+# print('Features sorted by number of missing rows')
+# print(stats[order(stats$NA.s, decreasing = TRUE), 'NA.s', drop = FALSE])
+stats
+tab_results(stats, name = "descriptive-statistics-categorical")
+
+tab_results(table(dc1$Kong.Interaction.Lateralisation), name = 'descriptive-kong-lateralisation')
+```
+
+## Validity 
+
+Categorical: 1 out of 17 ethogram items, 1 out of 2 demographics variables (Sex and Breed).
+```{r, echo = FALSE}
+# CATEGORICAL: univariate logistic regression using one predictor and outcome
+dc_cat <- dc1 %>% select(all_of(cat), -Isolation.Urinating, Breed, Sex, Outcome)
+dc_cat_lr <- lapply(dc_cat[-length(dc_cat)], 
+                        function(x) glm(formula = Outcome ~ x, 
+                        data = dc_cat, 
+                        family = binomial(link = logit), na.action = na.exclude))
+# results in list                       
+dc_cat_res <- lapply(dc_cat_lr, function(x) c(coef(summary(x)), summary(x)$deviance))
+
+# 2 factors -> add to dataframe
+dc_cat_res <- data.frame(do.call(rbind, dc_cat_res[lapply(dc_cat_res, length) == 9]))
+# 3 factors
+cat("Categorical variable with 3 factors:", levels(dc1$Breed))
+print(summary(dc_cat_lr[17]$Breed))
+# 4 factors p>0.2
+cat("Categorical variable with 4 factors:", levels(dc1$Kong.Interaction.Lateralisation))
+print(summary(dc_cat_lr[15]$Kong.Interaction.Lateralisation))
+```
+
+Ordinal: 7 out of 53 ethogram items. Score: 10 out of 42 variables.
+```{r, echo = FALSE}
+# ORDINAL: univariate logistic regression using one predictor and outcome
+dc_ord <- dc1 %>% select(all_of(ord), matches("^S[.]"), Outcome)
+dc_ord_lr <- lapply(dc_ord[-length(dc_ord)],
+                      function(x) glm(formula = Outcome ~ x, 
+                      data = dc_ord,
+                      family = binomial(link = logit), na.action = na.exclude))
+
+# results in dataframe
+dc_ord_res <- lapply(dc_ord_lr, function(x) round(c(coef(summary(x)), summary(x)$deviance), 4))
+dc_ord_res <- data.frame(do.call(rbind,dc_ord_res))
+```
+
+Save results from univariate analysis.
+```{r, echo = FALSE}
+# saving univariate logistic regression results to csv
+dc_lr <- rbind(dc_ord_res, dc_cat_res)
+colnames(dc_lr) <- c("estimate_0", "estimate_1", "se_0", "se_1", "z_value_0", "z_value_1",
+                    "p_value_0", "p_value_1", "deviance")
+tab_results(dc_lr, name = "univariate-logistic regression.csv")
+```
+
+Converting logistic regression result to odds ratio and confidence intervals. 
+```{r, echo = FALSE}
+lr <- dc_lr %>% select(estimate_1, p_value_1)
+colnames(lr) <- c("Estimate", "p-value")
+lr$OR <- exp(lr$Estimate)
+
+# list of model results ORDINAL + CATEGORICAL
+lr_cis <- lapply(c(dc_ord_lr, dc_cat_lr[c(-15, -17)]), # removing lateralisation and breed
+                function(x) as.data.frame(exp(confint(x, level = 0.95))))
+# list of dataframes removing the CI for the intercept
+lr_cis <- lapply(lr_cis, function(x) x[2,])
+# turn list of dataframes into a dataframe
+lr_ci <- bind_rows(lr_cis, .id = 'x')
+# replace rownames with column with the name of the variables
+lr_ci <- lr_ci %>% remove_rownames %>% column_to_rownames(var="x") %>% 
+                mutate_if(is.numeric, round, 2)
+# bind CIs
+lr <- cbind(lr, lr_ci)
+# save csv and print latex code
+tab_results(lr %>% mutate_if(is.numeric, round, 2), name = "lr-or-ci",
+    caption = "Univariate logistic regression model estimates, p-value, odds ratio (OR) and confidence interval (CI)")
+```
+
+## Feature Selection
+Metholodogy adapted from Hosmer2013, pg 107 (GLOW study example).
+
+### Step 1: Univariate logistic regression model results. 
+Features which achieved P < 0.25 were selected for consideration to be included in the reduced feature set. 
+Subsequentely, related variables were removed considering two cases: 
+- Two scores: when both the mean and product scores were selected, the score with the highest p-value was removed.
+- Score and original items: when both the original item and the score derived from it were selected, the one with the highest p-value was removed.
+
+**Variables with p < 0.25 (N = 28): original (N = 13), scores (N = 15) some are repeated**, 
+**after removing related variables (N = 13): original (N = 9), scores (N = 4)**.
+
+Variables whose logistic regression model resulted in p<0.10 when used to predict Outcome are shown.
+Positive estimates increase the probability of failure, while negative estimates decrease the probability of failure. 
+```{r, echo = FALSE}
+# drop original items and scores pvalue < 0.25, taking into account the pvalue
+feat_drop_pvalue <- c( 
+        # duplicated scores
+        "S.Distractions.Pull_prod",
+        "S.Distractions.Pull_mean",  # dropping because of "S.Walking.Distractions.Pull_prod"
+        "S.Crate.Handler_mean",
+        "S.Petting.Stimulus.During_prod",       # should always be dropped
+        "S.Sociability_prod",
+        
+        # removing because of "S.Sensitivity_mean", p-value smaller
+        "Body.check.Table",
+        "Body.check.General..Licks.",
+
+        # removing because of "S.Kong.Response_prod", p-value smaller
+        "Kong.Return.Handler",
+
+        # removing because of "S.Crate.Stimulus_mean", p-value smaller
+        "Crate.Behaviours..Sniffing.Exploring..", "Crate.Behaviours..Nudging.Crate.", 
+        "Crate.Behaviours..Digging.",
+        
+        # removing because of 
+        "S.Crate.Handler_prod", # p-value bigger
+        # "Crate.Behaviours..Actively.Seeking.Attention.", #p-value smaller
+        
+        # removing because of 
+        "S.Sociability_mean", # p-value bigger
+        "S.Petting.Stimulus.During_mean", "S.Petting.Engagement.During_mean",
+        # "Petting.Confidence.During", #p-value = 0.04
+        # "Petting.Responsiveness.After", p-value = 0.18
+
+        # pvalue > 0.20
+        "Isolation.Response..Unsettled.Pacing.",
+        "Tea.Towel.First.Response..Attempts.to.Removes.towel.with.mouth.",
+        "Tea.Towel.Second.Response..Turns.head.",
+
+        # pvalue > 0.15
+        "Lying.Settled",
+        "Crate.Behaviours..Actively.Seeking.Attention.",
+        "Petting.Responsiveness.After",
+        "S.Walking.Distractions.Pull_prod",
+        "S.Kong.Response_prod",
+        
+        # pvalue > 0.10
+        "S.Crate.Stimulus_mean", # no items with p  0.10
+        "Tea.Towel.First.Response..Indifferent."
+        )
+            
+# considering p < 0.25, step2: (duplicated scores) drop based on pvalue & (items and scores) drop original ethogram items
+feat_drop_items <- c( 
+        # duplicated scores
+        "S.Distractions.Pull_prod", # removing because of S.Walking.Distractions.Pull_prod, p-value smaller
+        "S.Distractions.Pull_mean", 
+        "S.Crate.Handler_mean",
+        "S.Petting.Stimulus.During_prod",  # should always be dropped
+        "S.Sociability_prod",
+        
+        # removing because of "S.Sensitivity_mean", p-value smaller
+        "Body.check.Table",
+        "Body.check.General..Licks.",
+
+        # removing because of "S.Crate.Stimulus_mean", p-value smaller
+        "Crate.Behaviours..Sniffing.Exploring..", "Crate.Behaviours..Nudging.Crate.", 
+        "Crate.Behaviours..Digging.",
+
+        # removing because of "S.Sociability_mean", # p-value bigger
+        "S.Petting.Stimulus.During_mean", # p = 0.05
+        "S.Petting.Engagement.During_mean",
+        "Petting.Confidence.During", #p-value smaller
+        "Petting.Responsiveness.After",
+        
+        # removing because of "S.Kong.Response_prod", similar p-value smaller
+        "Kong.Return.Handler",
+        
+        # removing because of "S.Crate.Handler_prod", # similar p-value bigger
+        "Crate.Behaviours..Actively.Seeking.Attention.", # similar p-value smaller
+
+        # pvalue > 0.20
+        "Isolation.Response..Unsettled.Pacing.",
+        "Tea.Towel.First.Response..Attempts.to.Removes.towel.with.mouth.",
+        "Tea.Towel.Second.Response..Turns.head.",
+
+        # pvalue > 0.15
+        "Lying.Settled",
+        "S.Walking.Distractions.Pull_prod",
+        "S.Kong.Response_prod",# no items with p  0.10
+        "S.Crate.Handler_prod", # no items with p  0.10
+
+        # pvalue > 0.10
+        "S.Crate.Stimulus_mean", # no items with p  0.10
+        "Tea.Towel.First.Response..Indifferent."
+        )
+
+
+# without 2 other breeds
+# var_10_pvalue
+# data_1 <- dc1 %>% select(S.Petting.Stimulus.During_mean, Crate.Behaviours..Sniffing.Exploring.., S.Sensitivity, S.Walking.Distractions.Pull_prod, Outcome)
+# var_15_pvalue
+# data_1 <- dc1 %>% select(S.Petting.Stimulus.During_mean, Crate.Behaviours..Sniffing.Exploring.., S.Sensitivity, S.Walking.Distractions.Pull_prod,
+                        # Familiarisation.Response..Exploration., Tea.Towel.First.Response..Indifferent., Breed, Outcome)
+
+# var_10_scores
+# data_1 <- dc1 %>% select(S.Walking.Distractions.Pull_prod, S.Sensitivity, S.Crate.Stimulus_mean, S.Petting.Stimulus.During_mean, Outcome)
+# var_15_scores
+# data_1 <- dc1 %>% select(S.Walking.Distractions.Pull_prod, S.Sensitivity, S.Crate.Stimulus_mean, S.Petting.Stimulus.During_mean,
+#                         Familiarisation.Response..Exploration., Tea.Towel.First.Response..Indifferent., Breed, Outcome)
+
+# var_10_items
+# data_1 <- dc1 %>% select(Body.check.Table, Crate.Behaviours..Sniffing.Exploring.., Petting.Confidence.During, S.Walking.Distractions.Pull_prod Outcome)
+
+
+```
+```{r, echo = FALSE}
+# sort features by p values from univariate analysis
+dc_lr %>% filter(p_value_1 < 0.15) %>% select(p_value_1)
+# dc_lr %>% filter(p_value_1 < 0.20) %>% select(p_value_1) %>% arrange(p_value_1)
+# dc_lr %>% filter(p_value_1 > 0.10 & p_value_1 < 0.15) %>% select(p_value_1)
+# dc_lr %>% filter(p_value_1 > 0.15 & p_value_1 < 0.20) %>% select(p_value_1)
+
+# p<0.10, scores (pvalue)
+data_1 <- dc1 %>% select(Outcome, S.Distractions.Pull_mean, S.Sensitivity, S.Crate.Stimulus_mean, S.Petting.Stimulus.During_mean, # <0.10
+                        Tea.Towel.First.Response..Indifferent., Distractions.First.Response..Human., Crate.Behaviours..Actively.Seeking.Attention.) # <0.15 
+                        #  Familiarisation.Response..Exploration., Walking.Initiative, Distractions.Second.Response..Human., 
+                        #  Distractions.Human, Crate.Behaviours..Nudging.Crate., Petting.Responsiveness.After, S.Crate.Handler_mean,
+                        #  Tea.Towel.First.Response..Attempts.to.Removes.towel.with.mouth.
+                        
+
+# p<0.10, scores (more variables)
+# data_1 <- dc1 %>% select(S.Sensitivity, S.Crate.Stimulus_mean, S.Sociability_mean, S.Walking.Distractions.Pull_prod, Outcome)
+# p<0.10, items
+# data_1 <- dc1 %>% select(Body.check.Table, Crate.Behaviours..Sniffing.Exploring.., Petting.Confidence.During, S.Distractions.Pull_mean, Outcome)
+# p<0.10, pvalue
+# data_1 <- dc1 %>% select(S.Petting.Stimulus.During_mean, S.Distractions.Pull_mean, Crate.Behaviours..Sniffing.Exploring.., S.Sensitivity, Outcome)
+
+# print pvalue of selected features
+# dc_lr %>% filter(row.names(dc_lr) %in% colnames(data_1)) %>% select(p_value_1)
+```
+
+### Step 2: Correlation
+0 features had correlation > 0.4 
+```{r, echo = FALSE}
+correlationMatrix <- round(abs(cor(data_1 %>% select(where(is.numeric)), 
+                            method = "kendall",
+                            use = "pairwise.complete.obs")),2)
+highlyCorrelated <- findCorrelation(correlationMatrix, cutoff=0.4, names = TRUE, exact = TRUE)
+print(highlyCorrelated)
+
+# plot
+plot <- ggplot(data = melt(correlationMatrix), aes(x=Var1, y=Var2, fill=value)) + 
+        geom_tile() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5)) +
+        xlab("Variables") + ylab(NULL)
+plot
+
+fig_results(plot = plot, name = "correlation", 
+        caption = "Correlation matrix for variables considered for the reduced feature set")
+
+data_reduced <- data_1 %>% select(-all_of(highlyCorrelated))
+```
+
+## Missing Data
+DC1, missing values per column and per row. Very few data are missing considering the original items selected.
+```{r, echo = FALSE}
+# reduced dataset
+dc_col_nas <- unlist(lapply(data_reduced, function (x) sum(is.na(x))))
+print(dc_col_nas)
+dc_row_nas <- apply(data_reduced, 1, function (x) sum(is.na(x)) ) 
+table(dc_row_nas)
+```
+
+## Visualization
+<!-- I think for the factors, because they are continuous variables (average of discrete variables), it is better to only have the boxplot. -->
+```{r, echo = FALSE}
+#categorical
+cat_feat <- data_reduced %>% select(where(is.factor), -Outcome) %>% colnames()
+
+# geom_mosaic won't work properly with aes_string
+cat("Plot these features manually: ", cat_feat)
+
+var = "Tea.Towel.First.Response..Indifferent."
+plot1 <- ggplot(data_reduced, aes_string( x = var, fill = 'Outcome', width = 1)) + 
+        geom_bar(position = "dodge") +
+        theme(legend.position = c(0.85,0.88), text = element_text(size = 20)) 
+
+plot2 <- ggplot(data = data_reduced) +
+        geom_mosaic(aes(x=product(Breed, Outcome), fill = Outcome), alpha = 0.5) +
+        theme(legend.position = "none", text = element_text(size = 20)) 
+
+plot3 <- plot_grid(plot1, plot2, rel_widths = c(2, 1), labels = "AUTO")
+
+title <- ggdraw() + 
+    draw_label(gsub("[.]", " ", var), fontface = 'bold')
+
+plot <- plot_grid(title, plot3, ncol = 1, rel_heights = c(0.1, 1))
+
+fig_results(plot = plot3,
+                name = gsub("[.]", "-", var),
+                caption = gsub("[.]", " ", var),
+                label = unlist(strsplit(var, "[.]"))[1])
+    
+plot
+
+```
+
+```{r, echo = FALSE}
+# numerical
+num_feat <- data_reduced %>% select(where(is.numeric))  %>% colnames()
+
+# discrete
+plot_discrete <- function(var){
+    
+    plot1 <- ggplot(data_reduced, aes_string( x = var, fill = 'Outcome', width = 1)) + 
+            geom_bar(position = "dodge") +
+            theme(legend.position = c(0.84,0.88)) 
+            # scale_x_discrete("Rating", limits = c(0:4), breaks = c(0:4), labels = c(0:4)) +
+            # expand_limits(x = c(0,4))
+
+    plot2 <- ggplot(data_reduced, aes_string( x = 'Outcome', y = var)) + 
+            geom_violin(position = "dodge", width = 0.8, aes(color = Outcome, fill = Outcome), alpha = 0.2) +
+            theme(legend.position = "none", text = element_text(size = 20)) +
+            geom_boxplot(position = "dodge", aes(colour = Outcome), fill = "white",  width = 0.3) +
+            ylab("Rating")
+    plot3 <- plot_grid(plot1, plot2, rel_widths = c(2, 1), labels = "AUTO")
+
+    title <- ggdraw() + 
+      draw_label(gsub("[.]", " ", var), fontface = 'bold')
+    
+    plot <- plot_grid(title, plot3, ncol = 1, rel_heights = c(0.1, 1))
+
+    fig_results(plot = plot3,
+                name = gsub("[.]", "-", var),
+                caption = gsub("[.]", " ", var),
+                label = unlist(strsplit(var, "[.]"))[1])
+    plot
+}
+
+disc_feat <- num_feat[!grepl("^S[.]", num_feat)]
+lapply(disc_feat, plot_discrete)
+
+# continuous
+plot_continuous <- function(var){
+
+    bin = ceiling((max(data_reduced[var], na.rm = TRUE) - min(data_reduced[var], na.rm = TRUE)) / 5)
+    # cat(var, bin, "\n") 
+    
+    plot1 <- ggplot(data_reduced, aes_string(x = var, fill = 'Outcome')) + 
+            geom_histogram(binwidth = bin, position = "dodge") +
+            theme(legend.position = c(0.84,0.88)) 
+
+    plot2 <- ggplot(data_reduced, aes_string( x = 'Outcome', y = var)) + 
+            geom_violin(position = "dodge", width = 0.8, aes(color = Outcome, fill = Outcome), alpha = 0.2) +
+            theme(legend.position = "none", text = element_text(size = 20)) +
+            geom_boxplot(position = "dodge", aes(colour = Outcome), fill = "white",  width = 0.3) +
+            ylab("Rating")
+    plot3 <- plot_grid(plot1, plot2, rel_widths = c(2, 1), labels = "AUTO")
+
+    title <- ggdraw() + 
+      draw_label(gsub("S[.]|[.]", " ", var), fontface = 'bold')
+    
+    plot <- plot_grid(title, plot3, ncol = 1, rel_heights = c(0.1, 1))
+
+    fig_results(plot = plot3,
+                name = gsub("[.]", "-", var),
+                caption = gsub("[.]", " ", var),
+                label = unlist(strsplit(var, "[.]"))[1])
+
+    plot
+}
+
+cont_feat <- num_feat[grepl("^S[.]", num_feat)]
+lapply(cont_feat, plot_continuous)
+```
+
+# Multivariate Model
+
+Preprocessing: Normalization + Imputation. Recursive Feature Elimination (RFE) + Multivariate Logistic Regression (LR). Optimising for F, sometimes recall, sometimes precision.
+Build model.
+```{r, echo = FALSE}
+# columns used as predictors
+data_reduced %>% colnames()
+
+# GLM predicts the SECOND class -> make sure Fail is second class
+# data_reduced$Outcome <- relevel(data_reduced$Outcome, ref = "Success")
+# RFE calculates the metrics on the FIRST class -> make sure Fail is first class
+data_reduced$Outcome <- relevel(data_reduced$Outcome, ref = "Fail")
+cat('predicting second class:', levels(data_reduced$Outcome))
+
+model_recipe <- recipe(Outcome ~ ., data = data_reduced)  %>%
+                step_dummy(all_nominal(), -Outcome) %>% 
+                step_impute_mean(all_numeric()) %>%
+                step_normalize(all_numeric())
+
+# Setting ROC as the metric for the Logistic Regression function
+lrFuncs$summary <- prSummary
+set.seed(42)
+
+ctrl <- rfeControl(functions = lrFuncs,         # Logistic Regression
+                method = "cv",                  # Cross Validation
+                number = nrow(data_reduced),    # Number of folds
+                # method = "LOOCV",
+                saveDetails = TRUE,
+                returnResamp = "all",
+                allowParallel = FALSE,
+                rerank = TRUE,
+                verbose = FALSE)
+
+# Recursive Feature Elimination with feat_lr
+model_rfe <- rfe(model_recipe,                 # predict Outcome using all other variables
+                data = data_reduced,           # selecting the features from univariate lr
+                sizes = 1:(ncol(data_reduced)-1),# from 1 to the number of features in the dataset
+                rfeControl = ctrl,
+                metric = "Recall",
+                maximize = TRUE)
+
+warnings()
+print(model_rfe)
+model <- summary(model_rfe$fit)
+print(model)
+# print(model_rfe$optVariables)
+```
+
+Model fitness with deviance analysis. 
+```{r, echo = FALSE}
+dev = model$null.deviance - model$deviance
+deg = model$df.null - model$df.residual
+cat('\ndeviance difference: ', dev)
+cat('\ndf difference: ', deg)
+cat('\nlevel of significance: ', pchisq(dev, deg, lower.tail = FALSE))
+cat('\nthe model is a good fit: ', pchisq(dev, deg, lower.tail = FALSE) < 0.05)
+```
+
+## Performance
+Performance metrics ROC and PR curves. 
+```{r, echo = FALSE}
+# cross validated predictions for performance analysis
+df_perf <- model_rfe$pred %>% 
+            filter(Variables == model_rfe$optsize) %>% # model_rfe$optsize
+            select(rowIndex, Fail, pred, obs) %>%
+            rename(c("Index" = "rowIndex", "Probability" = "Fail", "Predicted" = "pred", "Outcome" = "obs"))
+
+# calculate performance metrics
+cm <- confusionMatrix(data = df_perf$Predicted, reference = df_perf$Outcome, positive = "Fail")
+
+roc_curve <- roc.curve(scores.class0 = df_perf$Probability,
+             weights.class0 = abs(as.numeric(df_perf$Outcome)-2),
+             curve=TRUE)
+plot(roc_curve)
+png('3_results/dc1-working/roc-curve.png')working
+plot(roc_curve, xlab = "1 - Specificity")   
+dev.off()
+
+pr_curve <- pr.curve(scores.class0 = df_perf$Probability,
+             weights.class0 = abs(as.numeric(df_perf$Outcome)-2),
+             curve=TRUE)
+plot(pr_curve)
+png('3_results/dc1-working/pr-curve.png')
+plot(pr_curve)
+dev.off()
+
+metrics <- data.frame(Accuracy = cm$overall['Accuracy'], 
+                        ROC = roc_curve$auc,
+                        PR =  pr_curve$auc.integral, 
+                        t(cm$byClass))
+
+metrics %>% round(3) %>% select(Accuracy, ROC, PR, Precision, Recall, F1, Balanced.Accuracy)
+cm$table
+```
+
+Plot the logit.
+```{r, echo = FALSE}
+# logit function, calculate y given the probability(x)
+y <- function(x){ return(log(1/( 1/x - 1 ))) }
+df_perf$Estimate <- y(df_perf$Probability)
+df_perf$Status <- dc1$Status
+
+# releveling for the colours in the plot
+df_perf$Outcome <- relevel(df_perf$Outcome, "Fail")
+df_perf$Status <- relevel(df_perf$Status, "W")
+
+print("Probability predicted by the LR using PRQ data vs true Outcome")
+plot <- ggplot(df_perf, aes(x = Estimate, y = Probability, group = Outcome ))  +
+    theme(legend.position = c(0.14,0.88), text = element_text(size = 20)) +
+    geom_point(aes(shape=Outcome, color=Outcome), size = 5)
+plot
+
+fig_results(plot = plot, name = 'logit-outcome', 
+            caption = "Probability predicted by the best logistic regression model using DC1 data vs true Outcome")
+
+
+print("Probability predicted by the LR using PRQ data vs true Status")
+# plot Logit vs Status
+plot <- ggplot(df_perf, aes(x = Estimate, y = Probability, color = Status )) +
+    theme(legend.position = c(0.14,0.88), text = element_text(size = 20)) +
+    geom_point(aes(shape=Status, color=Status), size = 5)
+plot
+
+fig_results(plot = plot, name = 'logit-status', 
+            caption = "Probability predicted by the best logistic regression model using DC1 data vs true Status")
+
+print("Estimate and Probabilities per training outcome status")
+df_perf %>% group_by(Status) %>% dplyr::summarize(Mean = mean(Estimate, na.rm=TRUE))
+df_perf %>% group_by(Status) %>% dplyr::summarize(Mean = mean(Probability, na.rm=TRUE))
+```
+
+Names of the dogs that were false positives and false negatives.
+```{r, echo = FALSE}
+print("FALSE POSITIVE dogs predicted to fail, but succeed")
+dc1$Name[df_perf %>% filter(Predicted == "Fail" & Outcome == "Success") %>% arrange(Probability) %>% pull(Index)]
+
+print("FALSE NEGATIVE dogs predicted to succeed, but failed")
+dc1$Name[df_perf %>% filter(Predicted == "Success" & Outcome == "Fail") %>% arrange(Probability) %>% pull(Index)]
+```
+
+## Interpretation
+Discuss model interpretation.
+```{r, echo = FALSE}
+results_rfe <- as.data.frame(coef(summary(model_rfe$fit)))
+results_rfe$OR <- exp(results_rfe$Estimate)
+results_rfe <- cbind(results_rfe, exp(confint(model_rfe$fit, level = 0.95)))
+print(results_rfe)
+
+# save csv and print latex code
+tab_results(results_rfe,
+    caption = "Best logistic regression model using selected by RFE",
+    name = "rfe-lr")
+```
+# Conclusion

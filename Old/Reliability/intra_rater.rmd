@@ -1,0 +1,198 @@
+---
+title: "Ethogram Intra-rater realiability - preliminary analysis"
+author: "Marinara Marcato"
+output: 
+  html_document:
+    toc: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = "C:/Users/marinara.marcato/Project/Scripts/dog_ethogram")
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+# install.packages("irr")
+library(DescTools)
+# plot
+# library(ggplot2)
+# library(ggpubr)
+# data analysis
+library(irr) # reliability (icc, cohen's kappa)
+# datasets
+library(dplyr)
+library(plyr)
+library(tidyverse)
+library(reshape2)   # dcast function
+library(data.table) # rowid function
+```
+
+# Introduction 
+This document shows the data analysis carried out to investigate the intra-rater reliability of the ethogram filled out by two dog trainers.
+
+# Data Exploration
+Hallgreen2012 was used to define the methodology for the intra-rater reliability analysis.
+Two raters analysed a subset of the subject dogs (N=13).
+Two different data types were present in the scoring system: ordinal (N=53) and categorical (N=17).
+
+```{r, echo = FALSE}
+# import data
+vars <- read.csv("0_data/0_raw/ethogram-variables-trainers.csv", stringsAsFactors=FALSE)
+print(table(vars$Type))
+
+ord <- vars %>% filter(Type == "ordinal") %>% pull("Variable")
+cat <- vars %>% filter(Type == "categorical") %>% pull("Variable")
+
+intra <- read.csv("0_data/2_prepare/2022-07-22_Ethogram-Trainers_Intra-Rater.csv", header = TRUE)
+# number of scorings per assessor per data collection
+intra %>% select(Assessor, Data.Collection.Number) %>%
+        group_by(Assessor, Data.Collection.Number) %>% count()
+cat("Number of intra-rater evaluations", nrow(intra))
+```
+
+- *Ordinal data*: Intraclass correlation coefficient (ICC) was used from IRR package (icc). 
+Parameters: model = Two-way model as same raters across subjects, 
+unit = single rating as a subset of subjects are rated by multiple raters, 
+type = absolut agreement.
+
+ICC  values are interpreted as follows: less than 0.40 is poor agreement, moderate between 0.40 and 0.59, good between 0.60 and 0.74, and excellent between 0.75 and 1.0 (Cicchetti1994). 
+
+<!-- Harvey2016 ->  -->
+
+- *Categorical data*: Cohen's Kappa was used from IRR package (kappa2). This model was chosen because there was only 2 assessors. 
+
+Kappa (K) values are interpreted as follows: less than 0.20 is poor, unacceptable correlation, 0.21-0.4 is a fair and acceptable correlation, 0.41-0.60 is moderate correlation, 0.61-0.80 is a good correlation, and 0.81-1.00 a very good correlation (Altman, 1991)
+
+
+## Ordinal
+A total of 10 out of 53 ordinal variables presented a poor level of ICC (ICC <= 0.40).
+```{r, echo = FALSE}
+
+intra_ord <- function(x,y){
+  # cat("x", x)
+    data <- y  %>% select(Assessor, Name, Data.Collection.Number, x) %>%
+            unite(DC_Assessor, Assessor, Name, Data.Collection.Number) %>% 
+            dcast(DC_Assessor~rowid(DC_Assessor, prefix = "Assessment_"), value.var = x) %>%
+            select(-DC_Assessor)
+
+    result <- icc(data, model = "twoway", unit = "single", type = "agreement")
+    # print(result)
+    return(c(
+            result$value, result$lbound, result$ubound, # estimate value and CI
+            result$Fvalue, result$p.value, # F-test results # degrees of freedom are related to sujects result$df1, result$df2, 
+            result$raters, result$subjects # dataset raters and subjects
+  ))
+}
+intra_icc <- as.data.frame(t(sapply(ord, intra_ord, y = intra, simplify = TRUE)))
+colnames(intra_icc) <- c("ICC", "Low CI", "Upper CI", "Fvalue", "Pvalue", "Raters", "Subjects")
+
+# total of 10 out of 53 variables had ICC<0.4 or Pvalue >0.05
+icc_poor <- intra_icc %>% 
+    filter(ICC < 0.4 & Pvalue > 0.05) %>%
+    select(ICC, Pvalue) 
+icc_poor
+```
+The scores given by the same rater in two instances for the variables presenting concerning levels of intra-rater variability are printed below for further analysis. 
+```{r, echo = FALSE}
+# visualise poor results
+icc_print <- function(x,y){
+    print(x)
+    print(y %>% select(Assessor, Name, Data.Collection.Number, x) %>%
+        unite(DC_Assessor, Assessor, Name, Data.Collection.Number) %>% 
+        dcast(DC_Assessor~rowid(DC_Assessor, prefix = "Assessment_"), value.var = x) 
+    )
+}
+sapply(rownames(icc_poor), icc_print, y = intra)
+```
+<!--  
+Familiarisation.Response..Waiting.
+Body.check.Response
+Distractions.First.Response..Human.
+Kong.Interaction.Response.to.stimulus > only 2 different 
+Crate.Behaviours..Digging.
+Petting.Handler.Holding.dog
+Petting.Responsiveness.After
+Isolation.Response..Unsettled.Pacing.
+Reunion.Response
+Noise.Confidence
+ -->
+
+<!-- 
+Varibles used in model 
+
+dc1 
+Lying.Settled 
+S.Walking.Distractions.Pull_prod
+S.Sensitivity_mean -> Body.check.Response
+S.Kong.Response_prod -> Kong.Interaction.Response.to.stimulus 
+S.Crate.Stimulus_mean -> Crate.Behaviours..Digging.
+S.Crate.Handler_prod
+S.Sociability_mean
+Tea.Towel.First.Response..Indifferent.
+
+dc2
+Distractions.First.Response..Car. 
+S.Walking.Distractions.Pull_mean
+S.Isolation.Handler_mean  
+S.Kong.Response_prod -> Kong.Interaction.Response.to.stimulus 
+Crate.Behaviours..Sniffing.Exploring..
+S.Familiarisation.Handler_mean -> Familiarisation.Response..Waiting.
+S.Sensitivity_mean -> Body.check.Response
+S.Walking.Pull_mean
+S.Isolation.Stimulus 
+Distractions.Second.Response..Car.
+S.Crate.Handler_mean
+-->
+
+
+## Categorical
+A total of 8 variables out of 17 presented Kappa <= 0.2. 
+```{r, echo = FALSE}
+intra_cat <- function(x,y){
+    # cat("x", x)
+    data <- y  %>% select(Assessor, Name, Data.Collection.Number, x) %>%
+            unite(DC_Assessor, Assessor, Name, Data.Collection.Number) %>% 
+            dcast(DC_Assessor~rowid(DC_Assessor, prefix = "Assessment_"), value.var = x) %>%
+            select(-DC_Assessor)
+    result <- kappa2(data)
+    # print(result)
+    return(c(
+            result$value, result$statistic, result$p.value, 
+            result$raters, result$subjects # dataset raters and subjects
+    ))
+}
+intra_kappa <- as.data.frame(t(sapply(cat, intra_cat, y = intra, simplify = TRUE)))
+colnames(intra_kappa) <- c("Kappa", "Z", "Pvalue", "Raters", "Subjects")
+
+# total of 8 out of 17 variables had Kappa <0.6 or Pvalue >0.05
+kappa_poor <- intra_kappa %>% 
+      filter(Kappa <= 0.2 | Pvalue > 0.05) %>% 
+      select(Kappa, Pvalue) 
+kappa_poor
+```
+
+The scores given by the same rater in two instances for the variables presenting concerning levels of intra-rater variability are printed below for further analysis. 
+```{r, echo = FALSE}
+# visualise poor results
+kappa_print <- function(x,y){
+    print(x)
+    print(y %>% select(Assessor, Name, Data.Collection.Number, x) %>%
+        unite(DC_Assessor, Assessor, Name, Data.Collection.Number) %>% 
+        dcast(DC_Assessor~rowid(DC_Assessor, prefix = "Assessment_"), value.var = x) 
+    )
+}
+sapply(rownames(kappa_poor), kappa_print, y = intra)
+```
+<!-- 
+^Body.check.General..Mouths.  -> No change, 2NA
+*Tea.Towel.First.Response..Indifferent. -> 3 disagreements, 1NA
+^*Tea.Towel.First.Response..Change.from.Neutral. -> 1 disagreement, 1 Yes
+^Tea.Towel.First.Response..Plays. -> No change, 1 NA
+*Tea.Towel.Second.Response..Indifferent. -> 4 disagreements
+Tea.Towel.Second.Response..Attempts.to.Removes.towel.by.moving. -> 2 disagreements
+^Tea.Towel.Second.Response..Plays. -> 1 Yes
+^Isolation.Urinating -> No change, 1 NA
+
+- 4 different scores out of 13
+* thinking about merging this Indifferent and change from neutral
+^ there was no or little change (this is called prevalence problem)
+-->

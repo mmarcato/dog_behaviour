@@ -1,0 +1,75 @@
+```{r, echo = FALSE}
+data_reduced <- cbind(data_1 %>% select(Breed, Petting.Confidence.During, S.Petting.Stimulus.During_mean, Body.check.Table), data_2)
+
+data_reduced_nona <- na.omit(data_reduced)
+nrow(data_reduced_nona)
+data_reduced_nona$Outcome <- relevel(data_reduced_nona$Outcome, ref = "Success")
+
+model_1 <- glm(Outcome ~ ., data=data_reduced_nona, family = binomial)
+summary(model_1)
+
+data_reduced_nona$pred_prob <- predict(model_1, data_reduced_nona, type = "response")
+ggplot(data_reduced_nona, aes(pred_prob)) + geom_histogram(color = "black", fill = "royalblue")
+
+cutoffs <- c(seq(.1,1,.1))
+
+for(cut in cutoffs){
+    print(cut)
+    var_char <- paste0("pred_", as.character(cut))
+    data_reduced_nona[[var_char]] <- as.factor(ifelse(data_reduced_nona[['pred_prob']] > cut, "Fail", "Success"))
+}
+
+names(data_reduced_nona)
+
+pred_cols <- data_reduced_nona %>% select(starts_with("pred"), -pred_prob) %>% names()
+
+for(col in pred_cols){
+    print(col)
+    print(confusionMatrix(data = data_reduced_nona[[col]], reference = data_reduced_nona$Outcome, positive = "Fail"))
+    readline("press Enter to continue: ")
+}
+
+
+
+# logit function, calculate y given the probability(x)
+y <- function(x){ return(log(1/( 1/x - 1 ))) }
+data_reduced_nona$Estimate <- y(data_reduced_nona$pred_prob)
+data_reduced_nona$Probability <- data_reduced_nona$pred_prob
+th_fail = 0.7
+th_success = 0.3
+
+# releveling for the colours in the plot
+data_reduced_nona$Outcome <- relevel(data_reduced_nona$Outcome, "Fail")
+
+print("Probability predicted by the LR using PRQ data vs true Outcome")
+plot <- ggplot(data_reduced_nona, aes(x = Estimate, y = Probability, group = Outcome ))  +
+    # bottom - green
+    geom_rect(aes(xmin = -Inf, xmax = y(th_success), ymin = 0, ymax = th_success), 
+            fill = "#99ff99", alpha = 0.2, color = "white") + 
+    # top - orange
+    geom_rect(aes(xmin = y(th_fail), xmax = Inf, ymin = th_fail, ymax = 1), 
+            fill = "#ffff99", alpha = 0.2, color = "white") +  
+    theme(legend.position = c(0.14,0.88), text = element_text(size = 20)) +
+    geom_point(aes(shape=Outcome, color=Outcome), size = 5)
+plot
+
+
+#### Leave one out cross validation
+#install.packages("rms")
+library("rms")
+
+require("rms", quietly = TRUE)
+
+glm.pred.crossval <- ecospat.cv.glm(glm.obj=model_1, K=10, cv.lim=10, jack.knife=False) 
+    
+```
+
+
+```{r, echo = FALSE}
+c <- cor(data_1 %>% select(where(is.numeric)), use = "pairwise.complete.obs")
+library(corrplot)
+View(c)
+corrplot(c, method = "number", type = "lower")
+
+sapply(data_1, function(x) sum(is.na(x))/nrow(data_1)*100)
+```

@@ -19,7 +19,7 @@ dir_raw = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\0_data\\
 # Directory where to save the Processed file
 dir_pro = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\0_data\\1_process"
 
-date = '2022-07-22'
+date = '2022-11-16'
 
 ################################    Functions     ################################
 
@@ -50,7 +50,7 @@ def import_dogs(base_dir):
     df = pd.read_csv("{}\\Data Collection - Dogs.csv".format(base_dir), \
         parse_dates= ['DOA', 'DOB', 'End Date'], dayfirst = True, 
         usecols=['Code','Name', 'Breed', 'Sex', 'Source', 'Litter', 
-                    'DOB', 'DOA', 'End Date', 'Status'] )  #'PR Sup',
+                    'DOB', 'DOA', 'End Date', 'Status', 'Working'] )  #'PR Sup',
     print('Columns in Dog dataframe: \n', df.columns.tolist())
     print('Shape of Dog dataframe: \n', df.shape)
 
@@ -64,11 +64,6 @@ def import_dogs(base_dir):
                             df['Status'] == 'GD', 
                             df['Status'] == 'AD'], 
                             [np.nan, 'Fail', 'Success', 'Success'])
-    df['Label'] = np.select([df['Status'] == 'in Training',
-                            df['Status'] == 'W', 
-                            df['Status'] == 'AD',
-                            df['Status'] == 'GD'], 
-                            [np.nan, 0, 1,  2])
 
     return(df)
 
@@ -157,6 +152,12 @@ def feature_engineering(df):
     # list(df_ethogram.columns)
     print("Shape before feature engineering", df.shape)
 
+    # familiarisation
+    df = df.join(feature_extraction('S-Familiarisation-Handler', 
+        df[['Familiarisation-Response [Oriented to Handler]', 
+            'Familiarisation-Response [Waiting]']]))
+
+        
     # walking pull on leash (walking, distraction)
     df = df.join(feature_extraction('S-Walking-Pull', 
                 df[['Walking-Pull on leash', 'Walking-Pull strength']]))
@@ -168,25 +169,21 @@ def feature_engineering(df):
     df['S-Walking-Distractions-Pull_mean'] = df['S-Distractions-Pull_mean'] - df['S-Walking-Pull_mean']
     df['S-Walking-Distractions-Pull_prod'] = df['S-Distractions-Pull_prod'] - df['S-Walking-Pull_prod']
     
-    # familiarization
-    df = df.join(feature_extraction('S-Familiarisation-Handler', 
-        df[['Familiarisation-Response [Oriented to Handler]', 
-            'Familiarisation-Response [Waiting]']]))
-
-    # call back (after familiarization, after dog)
-    df = df.join(feature_extraction('S-Call-Response', 
-            df[['Call Back-Response', 'Dog-Call Back Response']]))
-    df['S-Familiarization-Dog-Call'] = df['Call Back-Response'] - df['Dog-Call Back Response']
 
     # obedience
     df = df.join(feature_extraction('S-Obedience', 
         df[['Standing-Response', 'Sitting-Response', 'Lying-Response']]))
 
     # body check 
-    df = df.join(feature_extraction('S-Sensitivity', 
-        df[['Body check-Table','Body check-Response']].join(df['Body check-General [Licks]'].replace(['Yes', 'No'], [1,0])).join(
-            df['Body check-General [Mouths]'].replace(['Yes', 'No'], [2,0]))
-        ))
+    # df = df.join(feature_extraction('S-Sensitivity', 
+    #     df[['Body check-Table','Body check-Response']].join(df['Body check-General [Licks]'].replace(['Yes', 'No'], [-1,0])).join(
+    #         df['Body check-General [Mouths]'].replace(['Yes', 'No'], [-2,0]))
+    #     ))
+    df['S-Sensitivity_mean'] = df[['Body check-Table','Body check-Response']].mean(axis = 1)
+    # .join(
+    #         df['Body check-General [Licks]'].replace(['Yes', 'No'], [-1,0])).join(
+    #         df['Body check-General [Mouths]'].replace(['Yes', 'No'], [-2,0]))
+
 
     # tea towel -> yes and nos into numbers by taking the mean considering the level of response
     df_towel = pd.DataFrame([df['Tea Towel-First Response [Indifferent]'].replace(['Yes', 'No'], [0,1]),
@@ -230,7 +227,13 @@ def feature_engineering(df):
 
     # dog
     df = df.join(feature_extraction('S-Dog-Distraction',
-            df[['Dog-Response', 'Dog-Call Back Response']]))
+            df[['Dog-Response', 'Dog-Call Back Response']]))    
+    
+    # call back (after familiarisation, after dog)
+    df = df.join(feature_extraction('S-Call-Response', 
+            df[['Call Back-Response', 'Dog-Call Back Response']]))
+    df['S-Familiarisation-Dog-Call'] = df['Call Back-Response'] - df['Dog-Call Back Response']   # calculate difference
+
 
     # crate
     df = df.join(feature_extraction('S-Crate-Response', 
@@ -294,7 +297,7 @@ df.drop(columns = ["Data Collection Date", "Video Start Time (HH:MM:SS)"], inpla
 # changing the order of the columns, removing Timestamp as it does not matter
 df = df[['Name','Code','Data Collection Number', 'BT Date', 'Assessor', 
     'Breed', 'Sex', 'Litter', 'Source', 'DOB', 'DOA', 'End Date', 'Duration',
-    'Status', 'Label', 'Outcome', 'BT Start', 'BT Duration'] + df.columns.to_list()[16:-3]]
+    'Status', 'Outcome', 'Working', 'BT Start', 'BT Duration'] + df.columns.to_list()[16:-3]]
 # rename BT Date to Data Collection Date
 df.rename(columns = {"BT Date" :"Data Collection Date" }, inplace = True)
 
