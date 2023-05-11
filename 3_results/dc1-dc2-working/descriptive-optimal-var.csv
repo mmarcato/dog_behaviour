@@ -1,0 +1,7 @@
+"","Min.","X1st.Qu.","Median","Mean","X3rd.Qu.","Max.","NA.s"
+"Walking Initiative",1,2,2,2.36206896551724,3,5,0
+"S Familiarisation Handler_mean",1,1,1.5,1.79824561403509,2,5,1
+"S Distractions Pull_mean",1,2.5,3,3.14655172413793,4,4.5,0
+"S Distractions Difference_mean",-2.5,-1,-0.5,-0.505747126436782,-0.0625,1.25,0
+"S Crate Stimulus_mean",1.25,1.25,1.5,1.49561403508772,1.75,2.5,1
+"S Crate Handler_mean",1,1,1.66666666666667,1.8859649122807,2.66666666666667,4,1

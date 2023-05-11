@@ -1,0 +1,99 @@
+"","Min.","X1st.Qu.","Median","Mean","X3rd.Qu.","Max.","NA.s"
+"Data Collection Number",1,1,1,1,1,1,0
+"Duration",62,142,215,202.48275862069,251.25,421,0
+"Familiarisation Response  Oriented to Handler ",1,1,2,2.14545454545455,2,5,3
+"Familiarisation Response  Exploration ",1,4,5,4.31034482758621,5,5,0
+"Familiarisation Response  Waiting ",1,1,1,1.49122807017544,2,5,1
+"Call Back Response",1,1,1,1.3265306122449,2,3,9
+"Walking Distractibility",1,1,2,1.89655172413793,3,3,0
+"Walking Pull on leash",1,1,1,1.67241379310345,2,4,0
+"Walking Pull strength",1,1,1,1.5,2,4,0
+"Walking Initiative",1,2,2,2.36206896551724,3,5,0
+"Standing Response",1,2,2,2.51724137931034,4,4,0
+"Sitting Response",1,1,2,2.40350877192982,3,4,1
+"Lying Response",1,1.25,3,2.55172413793103,4,4,0
+"Lying Settled",1,1,2,2.07142857142857,3,4,2
+"Body check Table",1,3,4,3.51851851851852,4,4,4
+"Body check Response",1,3,3,2.94827586206897,3,4,0
+"Distractions First Response  Teddy ",1,3,4,3.74137931034483,4.75,6,0
+"Distractions First Response  Human ",2,3,3,3.36206896551724,4,5,0
+"Distractions First Response  Car ",1,3,3,3.20689655172414,4,6,0
+"Distractions First Response  Food ",1,3,4,3.96551724137931,5,6,0
+"Distractions Second Response  Teddy ",1,2,3,2.82758620689655,4,6,0
+"Distractions Second Response  Human ",1,2,3,2.98245614035088,4,5,1
+"Distractions Second Response  Car ",1,2,3,2.68421052631579,3,5,1
+"Distractions Second Response  Food ",1,3,4,3.73684210526316,5,6,1
+"Distractions Pull on leash",1,2,3,2.87931034482759,3,4,0
+"Distractions Pull strength",1,2.25,3,3.41379310344828,5,5,0
+"Distractions Human",3,4,5,5.27586206896552,6,7,0
+"Kong Presentation Response",2,2.5,4,3.86206896551724,5,5,0
+"Kong Interaction Response to stimulus",2,3,3,3.08771929824561,3,4,1
+"Kong Interaction Response to handler",1,1,1,1.59649122807018,3,3,1
+"Kong Interaction Back",1,1,1,1.57142857142857,2,5,2
+"Kong Return Handler",1,2,2,2.17543859649123,2,4,1
+"Dog Response",1,4,5,4.79310344827586,6,8,0
+"Dog Call Back Response",1,1,2,1.83928571428571,2,4,2
+"Crate Entering",1,1,1,1.41379310344828,2,4,0
+"Crate Behaviours  Settled ",1,1,2,2.15789473684211,3,5,1
+"Crate Behaviours  Sniffing Exploring  ",1,2,2,2.56140350877193,3,4,1
+"Crate Behaviours  Actively Seeking Attention ",1,1,2,2.17543859649123,3,5,1
+"Crate Behaviours  Digging ",1,1,1,1.08771929824561,1,3,1
+"Crate Behaviours  Nudging Crate ",1,1,1,1.10526315789474,1,2,1
+"Crate Behaviours  Pawing ",1,1,1,1.2280701754386,1,4,1
+"Crate Behaviours  Whining ",1,1,2,1.9622641509434,3,4,5
+"Crate Behaviours  Barking ",1,1,1,1.55357142857143,1,5,2
+"Crate Self Modulation",1,1,2,2.05263157894737,3,3,1
+"Crate Stress",1,2,2,2.31578947368421,3,4,1
+"Petting Handler Stimulus",1,1,1,1.15789473684211,1,3,1
+"Petting Handler Holding dog",1,1,1,1.19298245614035,1,3,1
+"Petting Confidence During",1,3,3,3.08771929824561,3,5,1
+"Petting Responsiveness After",2,3,4,3.87719298245614,4,6,1
+"Isolation Response  Time oriented ",2,3,4,4,5,5,1
+"Isolation Response  Exploration ",1,1,2,2.08620689655172,3,4,0
+"Isolation Response  Unsettled Pacing ",1,1,2,1.82758620689655,2,5,0
+"Isolation Response  Whining ",1,1,2,1.87272727272727,2,4,3
+"Isolation Response  Barking ",1,1,1,1.53448275862069,1,5,0
+"Reunion Response",1,4,4,4.1551724137931,5,6,0
+"Noise Confidence",3,4,4,3.91379310344828,4,6,0
+"S Familiarisation Handler_mean",1,1,1.5,1.79824561403509,2,5,1
+"S Familiarisation Handler_prod",1,1,2,3.6551724137931,4,25,0
+"S Walking Pull_mean",1,1,1,1.58620689655172,2,4,0
+"S Walking Pull_prod",1,1,1,3.06896551724138,4,16,0
+"S Distractions Pull_mean",1,2.5,3,3.14655172413793,4,4.5,0
+"S Distractions Pull_prod",1,6,9,10.5344827586207,15,20,0
+"S Walking Distractions Pull_mean",-2,1,1.5,1.56034482758621,2,3.5,0
+"S Walking Distractions Pull_prod",-12,3,8,7.46551724137931,11,19,0
+"S Obedience_mean",1,2,2.33333333333333,2.48563218390805,3,4,0
+"S Obedience_prod",1,6,12,15.7241379310345,17.5,64,0
+"S Sensitivity",2,3,3.5,3.21551724137931,3.5,4,0
+"S Tea Towel First Response",0,1,1.66666666666667,1.65804597701149,2.5,3.5,0
+"S Tea Towel Second Response",0,0,1,1.33908045977011,2.29166666666667,3.5,0
+"S Distractions First Response_mean",2.25,3,3.5,3.56896551724138,4,5.5,0
+"S Distractions First Response_prod",12,61,139.5,188.172413793103,222.75,900,0
+"S Distractions Second Response_mean",1.5,2.5,3,3.08477011494253,3.6875,5.5,0
+"S Distractions Second Response_prod",3,24,57,110.155172413793,131.25,600,0
+"S Distractions Difference_mean",-2.5,-1,-0.5,-0.505747126436782,-0.0625,1.25,0
+"S Kong Response_mean",2,2.25,2.75,2.67241379310345,2.9375,4.25,0
+"S Kong Response_prod",2,24,30,47.5862068965517,48,300,0
+"S Dog Distraction_mean",1,2.5,3.5,3.37931034482759,4,6,0
+"S Dog Distraction_prod",1,4,8.5,9,12,28,0
+"S Call Response_mean",1,1,1.5,1.58771929824561,2,3,1
+"S Call Response_prod",1,1,2,2.39655172413793,3,8,0
+"S Familiarisation Dog Call",-3,-1,-0.5,-0.5625,0,1,10
+"S Crate Response_mean",0.75,1.75,2.25,2.17672413793103,2.5,4,0
+"S Crate Response_prod",0,6,16,24.9310344827586,27,144,0
+"S Crate Stimulus_mean",1.25,1.25,1.5,1.49561403508772,1.75,2.5,1
+"S Crate Stimulus_prod",1,2,3,3.86206896551724,4,27,0
+"S Crate Handler_mean",1,1,1.66666666666667,1.8859649122807,2.66666666666667,4,1
+"S Crate Handler_prod",1,1,2,10.5344827586207,16,60,0
+"S Petting Stimulus During_mean",1,2,2,2.12280701754386,2.5,4,1
+"S Petting Stimulus During_prod",1,3,3,3.67241379310345,4,15,0
+"S Petting Engagement During_mean",1,2,2,2.14035087719298,2.5,3.5,1
+"S Petting Engagement During_prod",1,3,3,3.63793103448276,4,10,0
+"S Petting After_mean",1.5,2.5,2.5,2.53508771929825,2.5,3.5,1
+"S Petting After_prod",1,4,4,4.5,5,12,0
+"S Isolation Handler_mean",1,2,2.33333333333333,2.45689655172414,3,4,0
+"S Isolation Handler_prod",1,4.25,8,11.7931034482759,15,60,0
+"S Isolation Stimulus",-4,-1,0,0.258620689655172,1,3,0
+"S Sociability_mean",2.66666666666667,3.33333333333333,3.66666666666667,3.72413793103448,4,5.33333333333333,0
+"S Sociability_prod",5,36,48,51.0172413793103,60,150,0

@@ -118,6 +118,7 @@ dc1$Duration = as.numeric(gsub(" .*$", "", dc1$Duration))
 dc1 <- dc1 %>% filter(Working != "Medical")
 dc1$Working <- droplevels(dc1$Working)
 dc1$Working <- relevel(dc1$Working, "Success")
+dc1$Outcome <- droplevels(dc1$Outcome)
 ```
 All ordinal (N = 53) and categorical (N = 17) variables from the original ethogram items, 
 score (N = 42) variables derived from the original ethogram items and 
@@ -143,6 +144,9 @@ print(table(dc1$Breed))
 cat('Final dataset (dogs, variables): ', dim(dc1))
 print(table(dc1$Working))
 print(prop.table(table(dc1$Working)))
+
+print("Dogs who failed after completing the training programme while on the working programmes")
+dc1 %>% filter(Working != dc1$Outcome) %>% select(Name)
 
 # Sex
 print(table(dc1$Sex))
@@ -284,7 +288,7 @@ lr <- cbind(lr, lr_ci)
 
 
 # save csv and print latex code
-tab_results(lr %>% mutate_if(is.numeric, round, 2), name = "lr-or-ci",
+tab_results(lr %>% mutate_if(is.numeric, round, 2), name = "lr",
     caption = "Univariate logistic regression model estimates, p-value, odds ratio (OR) and confidence interval (CI)")
 ```
 
@@ -305,6 +309,7 @@ Positive estimates increase the probability of failure, while negative estimates
 ```{r, echo = FALSE}
 # sort features by p values from univariate analysis
 dc_lr %>% filter(p_value_1 < 0.15) %>% select(p_value_1) %>% arrange(p_value_1)
+lr %>% filter(p_value < 0.15) %>% select(p_value, Significance)
 # dc_lr %>% filter(p_value_1 > 0.10 & p_value_1 < 0.15) %>% select(p_value_1)
 
 # p<0.10, scores (pvalue)
@@ -542,6 +547,7 @@ pr_curve <- pr.curve(scores.class0 = df_perf$Probability,
              weights.class0 = abs(as.numeric(df_perf$Working)-2),
              curve=TRUE)
 plot(pr_curve)
+
 png('3_results/dc1-working/pr-curve.png')
 plot(pr_curve, auc.main = FALSE, col = 'blue',
          main = paste('PR Curve (AUC = ',toString(round(pr_curve$auc.integral,2)),')',sep = ''), 
@@ -591,8 +597,19 @@ fig_results(plot = plot, name = 'logit-status',
             caption = "Probability predicted by the best logistic regression model using DC1 data vs true Status")
 
 print("Estimate and Probabilities per working outcome status")
-df_perf %>% group_by(Status) %>% dplyr::summarize(Mean = mean(Estimate, na.rm=TRUE))
-df_perf %>% group_by(Status) %>% dplyr::summarize(Mean = mean(Probability, na.rm=TRUE))
+df_perf %>% group_by(Status) %>% dplyr::summarize(Mean = mean(Estimate, na.rm=TRUE), SD = sd(Estimate))
+df_perf %>% group_by(Status) %>% dplyr::summarize(Mean = mean(Probability, na.rm=TRUE), SD = sd(Probability))
+
+# box plot of probability per status
+ggplot(df_perf, aes(x=Status, y=Probability, color = Status)) + 
+  geom_boxplot() + theme(legend.position = c(0.88, 0.88), axis.title=element_text(size=20,face="bold"), axis.text=element_text(size=20), text = element_text(size = 20))
+
+# Hypothesis testing: group means are equal (i.e. mean probability of status are the same)
+kruskal.test(Probability ~ Status, data = df_perf)
+pairwise.wilcox.test(df_perf$Probability, df_perf$Status, 
+            p.adjust.method = "none")
+# results show a statistically significant difference between guide dogs and withdrawn dogs, and guide and assistance.
+
 ```
 
 Names of the dogs that were false positives and false negatives.

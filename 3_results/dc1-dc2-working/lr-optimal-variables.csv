@@ -1,0 +1,7 @@
+"","Significance","Estimate","p_value","OR","2.5 %","97.5 %"
+"Walking Initiative","*",0.5817,0.1418,1.78907727837097,0.82,4.03
+"S Familiarisation Handler_mean","**",0.6618,0.0645,1.938278096849,0.98,4.24
+"S Distractions Pull_mean","***",-0.7961,0.0394,0.451084768670676,0.2,0.92
+"S Distractions Difference_mean","*",0.7748,0.1009,2.17015805216695,0.89,5.86
+"S Crate Stimulus_mean","**",2.207,0.0502,9.08841022359498,1.05,99.9
+"S Crate Handler_mean","**",-0.9127,0.0684,0.401438874509952,0.12,0.93
