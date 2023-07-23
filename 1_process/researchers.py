@@ -1,27 +1,46 @@
 #        This script takes raw csv files as they are in Google Sheets:
 #        'Ethogram - Researchers.csv' and 'Data Collection - Dogs.csv' 
 #        It merges them to create 'YYYY-MM-DD_Ethogram-Researchers.csv'
-################################    Imports     ################################
+#------------------------------------------------------------------------------------#
+#                                        Imports                                     #
+#------------------------------------------------------------------------------------#
 
 import pandas as pd
 import re
 import datetime as dt
 import numpy as np
 
-################################    Setup     ################################
+#------------------------------------------------------------------------------------#
+#                                        Setup                                       #
+#------------------------------------------------------------------------------------#
 
 # Directory where to find Ethogram and Dogs csv files
 dir_raw = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\0_data\\0_raw"
 # Directory where to save the Processed file
 dir_pro = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\0_data\\1_process"
 
-################################    Functions     ################################
+date = "2023-07-22"
+#------------------------------------------------------------------------------------#
+#                                      Functions                                     #
+#------------------------------------------------------------------------------------#
 
 def import_ethogram(base_dir):
     df = pd.read_csv("{}\\Ethogram - Researchers.csv".format(base_dir))
     # changes column order
     df = df[['Dog code', 'Data Collection Number', 'Data Collection Date'] 
              + df.columns.to_list()[2:-2]]
+    
+    # select columns that contain "Time ("
+    cols = df.columns[df.columns.str.contains("Time \(")]
+    # replace ".", ";" with :
+    df.loc[:,cols] = df.loc[:,cols].replace(to_replace= "\.", value = ":", regex = True)   
+    df.loc[:,cols] = df.loc[:,cols].replace(to_replace= "\;", value = ":", regex = True)   
+    for col in cols:
+        df.loc[:,col] = df.loc[:, col].str.strip()
+    df.replace(to_replace = ['NA', 'Na', 'na', 'n/a', 'n\a', 'NaN', np.nan, 'nan'],
+               value = [ np.nan,  np.nan,  np.nan,  np.nan,  np.nan,  np.nan,  np.nan,  np.nan], inplace = True)
+
+    
     # drop rows that Marinara assessed 
     df = df[~df['Assessor'].isin(['Marinara'])]    
     # encodes assessors
@@ -129,7 +148,9 @@ def categories2numbers(df):
     return(df)
 
 
-################################    Main Start     ################################
+#------------------------------------------------------------------------------------#
+#                                        Main                                        #
+#------------------------------------------------------------------------------------#
 
 # importing and processing ethogram dataframe
 df_ethogram = import_ethogram(dir_raw)
@@ -143,8 +164,8 @@ df_ethogram = categories2numbers(df_ethogram)
         #df_ethogram[df_ethogram['Dog code'] == code & df_ethogram['Data Collection Number']!= dc, 'Assessor' ]
 # exploring any duplicates
 print('Show duplicates')
-for (dog, date) in df_ethogram[df_ethogram.duplicated(subset = ['Dog code', 'Data Collection Date'])].loc[:,('Dog code', 'Data Collection Date')].drop_duplicates().values:
-    print('\n',dog, date)
+for (dog, dates) in df_ethogram[df_ethogram.duplicated(subset = ['Dog code', 'Data Collection Date'])].loc[:,('Dog code', 'Data Collection Date')].drop_duplicates().values:
+    print('\n',dog, dates)
     #print(df_ethogram[(df_ethogram['Dog code'] == dog) & (df_ethogram['Data Collection Date'] == date)].mean())
         
 # importing dogs information
@@ -160,6 +181,6 @@ df = df[['Name','Code','Data Collection Number', 'Data Collection Date',
     'End Date', 'Status'] + df.columns.to_list()[14:]]
   
 #save to csv file
-df.to_csv('{}\\2021-05-03_Ethogram-Researchers.csv'.format(dir_pro), index = False)
+df.to_csv('{}\\{}_Ethogram-Researchers.csv'.format(dir_pro, date), index = False)
 
 ################################      Main End       ################################

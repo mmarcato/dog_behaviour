@@ -1,3 +1,6 @@
 {
-    "python.pythonPath": "venv\\Scripts\\python.exe"
+    "python.pythonPath": "venv\\Scripts\\python.exe",
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "python.defaultInterpreterPath": "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_study\\venv\\Scripts\\python.exe",
+
 }

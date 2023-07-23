@@ -1,18 +1,22 @@
 #
 #         This script takes csv raw files as they are in Google Sheets:
-#         'Ethogram - Trainer.csv' and 'Data Collection - Dogs.csv' 
+#         'Ethogram - Trainers.csv' and 'Data Collection - Dogs.csv' 
 #         It merges them to create 'YYYY-MM-DD_Ethogram-Trainers.csv'
 #         Drops the text of some variables
 #
 
-################################    Imports     ################################
+#------------------------------------------------------------------------------------#
+#                                        Imports                                     #
+#------------------------------------------------------------------------------------#
 import pandas as pd
 import re
 import datetime as dt
 import numpy as np
 pd.set_option('display.max_rows', None)
 
-################################    Setup     ################################
+#------------------------------------------------------------------------------------#
+#                                        Setup                                       #
+#------------------------------------------------------------------------------------#
 
 # Directory where to find Ethogram, Dogs and Data csv files
 dir_raw = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\0_data\\0_raw"
@@ -21,7 +25,9 @@ dir_pro = "C:\\Users\\marinara.marcato\\Project\\Scripts\\dog_ethogram\\0_data\\
 
 date = '2022-11-16'
 
-################################    Functions     ################################
+#------------------------------------------------------------------------------------#
+#                                      Functions                                     #
+#------------------------------------------------------------------------------------#
 
 def import_ethogram(base_dir):
     df = pd.read_csv("{}\\Ethogram - Trainers.csv".format(base_dir))
@@ -270,7 +276,9 @@ def feature_engineering(df):
     print("Shape after feature engineering", df.shape)
     return(df)
 
-################################    Main Start     ################################
+#------------------------------------------------------------------------------------#
+#                                        Main                                        #
+#------------------------------------------------------------------------------------#
     
 # importing dogs information
 df_dogs = import_dogs(dir_raw)

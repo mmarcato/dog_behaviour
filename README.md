@@ -28,18 +28,19 @@ Folder 0_data
         - *Inter-rater realibility:* Same video different assessors [Code, DC]: ['05-01-LD' 1], ['05-04-LZ' 1], ['04-02-LE' 1], ['05-11-LE' 1], ['05-13-LE' 1], ['05-03-LF' 1], ['04-07-LE' 1], ['07-02-LH' 1], ['07-01-LG' 1], ['05-14-LE' 1], ['11-02-IM' 2] 
 
 ### Process
-Folder 1_process:
-    - demographics_process.py
-    - researchers_process.py : works with datasets in folder '0_data/0_raw', namely: 
+Folder 1_process: works with datasets in folder '0_data/0_raw', namely: 
+    - demographics.py
+    - timestamps.py: 
+    - researchers.py:
         - Imports 'Data Collection - Dogs.csv' and 'Ethogram - Researchers'
         - Functions: combines two dataset and assigns numbers to categorical variables in ethogram.
         - Exports 'YY-MM-DD_Ethogram-Researchers.csv' to '0_data/1_process'
 
-    - trainers_process.py : works with datasets in folder 'dfs', namely: 
+    - trainers.py: works with datasets in folder '0_data/0_raw', namely: 
         - Imports 'Data Collection - Dogs.csv' and 'Ethogram - Trainers'
         - Functions: combines two dataset and assigns numbers to categorical variables in ethogram.
         - Exports 'YY-MM-DD_Ethogram-Trainers.csv' to '0_data/1_process'
 
-### Results
 
+### Results
 Data analysis results for working success prediction.
