@@ -20,12 +20,12 @@ Folder 0_data
     - 'YY-MM-DD_Ethogram-Trainers.csv': Processed version of the 'Ethogram - Researchers.csv'. Duplicates: Check whether no missing data and give preference to keep the last occurence as we were changing the form.
 
 - 0_data/2_prepare:     
-        - *Intra-rater realibility:* Same video and assessor [Code, DC, Assessor]: ['04-02-LE' 1 'Allyce'], ['04-02-LE' 1 'Susan Turtle'], ['04-02-LE' 2 'Allyce'], ['04-02-LE' 2 'Susan Turtle'], ['04-03-LD' 1 'Allyce'], ['04-03-LD' 2 'Allyce'], ['04-01-LD' 1 'Susan Turtle'], ['10-11-LJ' 1 'Susan Turtle'], ['12-03-LM' 2 'Allyce']. 
-        - *Inter-rater realibility:* Same video different assessors [Code, DC]: ['04-02-LE' 1], ['04-01-LD' 1], ['04-02-LE' 2], ['04-03-LD' 1], ['04-03-LD' 2], ['10-11-LJ' 1], ['12-03-LM' 2]
+        - *Intra-rater realibility:* Same video and assessor.
+        - *Inter-rater realibility:* Same video different assessors.
 
     - 'YY-MM-DD_Ethogram-Researchers.csv'. Processed version of the 'Ethogram - Researchers.csv'. Duplicates: Check whether no missing data and give preference to keep the last occurence as we were changing the form.    
-        - *Intra-rater realibility:* Same video and assessor [Code, DC, Assessor]: ['07-01-LG' DC1 'Hazel'], ['11-02-IM' DC2 'Con']. 
-        - *Inter-rater realibility:* Same video different assessors [Code, DC]: ['05-01-LD' 1], ['05-04-LZ' 1], ['04-02-LE' 1], ['05-11-LE' 1], ['05-13-LE' 1], ['05-03-LF' 1], ['04-07-LE' 1], ['07-02-LH' 1], ['07-01-LG' 1], ['05-14-LE' 1], ['11-02-IM' 2] 
+        - *Intra-rater realibility:* Same video and assessor.
+        - *Inter-rater realibility:* Same video different assessors.
 
 ### Process
 Folder 1_process: works with datasets in folder '0_data/0_raw', namely: 
